@@ -1,2 +1,2 @@
 # Rishi-Engine
-Rishi Engine - Following Cherno
+Rishi Engine - Following Chernos youtube Hazel Engine series
