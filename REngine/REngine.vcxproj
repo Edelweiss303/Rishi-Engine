@@ -11,9 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\REngine.h" />
+    <ClInclude Include="src\REngine\Application.h" />
+    <ClInclude Include="src\REngine\Core.h" />
+    <ClInclude Include="src\REngine\EntryPoint.h" />
     <ClInclude Include="src\Test.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\REngine\Application.cpp" />
     <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -61,7 +66,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RE_PLATFORM_WINDOWS;RE_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
