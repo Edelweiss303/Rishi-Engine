@@ -3,6 +3,7 @@
 //For use by REngine applications;
 
 #include "REngine/Application.h"
+#include "REngine/Log.h"
 
 
 // ---------- ENTRY POINT ----------
