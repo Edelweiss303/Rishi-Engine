@@ -4,6 +4,9 @@
     <Filter Include="REngine">
       <UniqueIdentifier>{4DD6DB54-B9B5-5AF0-C2CD-E5C62E2CC151}</UniqueIdentifier>
     </Filter>
+    <Filter Include="REngine\Events">
+      <UniqueIdentifier>{91C9B1D3-7D97-A5D9-662B-16005298813E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\REngine.h" />
@@ -15,6 +18,18 @@
     </ClInclude>
     <ClInclude Include="src\REngine\EntryPoint.h">
       <Filter>REngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\REngine\Events\ApplicationEvent.h">
+      <Filter>REngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\REngine\Events\Event.h">
+      <Filter>REngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\REngine\Events\KeyEvent.h">
+      <Filter>REngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\REngine\Events\MouseEvent.h">
+      <Filter>REngine\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\REngine\Log.h">
       <Filter>REngine</Filter>
