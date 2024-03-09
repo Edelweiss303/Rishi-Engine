@@ -34,7 +34,7 @@
     <ClInclude Include="src\REngine\Log.h">
       <Filter>REngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\Test.h" />
+    <ClInclude Include="src\repch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\REngine\Application.cpp">
@@ -43,6 +43,6 @@
     <ClCompile Include="src\REngine\Log.cpp">
       <Filter>REngine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Test.cpp" />
+    <ClCompile Include="src\repch.cpp" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "REngine/Core.h"
-#include <string>
-#include <functional>
 
 namespace REngine
 {

@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace REngine
 {
     class RE_API KeyEvent : public Event

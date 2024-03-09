@@ -19,6 +19,9 @@ project "REngine"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "repch.h"
+    pchsource "REngine/src/repch.cpp"
+
     -- Files to include
 
     files
