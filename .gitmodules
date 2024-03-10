@@ -1,6 +1,6 @@
 [submodule "REngine/vendor/spdlog"]
 	path = REngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "REngine/vendor/glfw"]
-	path = REngine/vendor/glfw
+[submodule "REngine/vendor/GLFW"]
+	path = REngine/vendor/GLFW
 	url = https://github.com/Edelweiss303/glfw.git
