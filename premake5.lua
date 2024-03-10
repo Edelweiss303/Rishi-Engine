@@ -10,6 +10,12 @@ workspace "REngine";
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative ro root folder
+Includedir = {}
+Includedir["GLFW"] = "REngine/vendor/GLFW/include"
+
+include "REngine/vendor/GLFW"
+
 project "REngine"
 
     location "REngine"
@@ -34,6 +40,13 @@ project "REngine"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include"
+        "%{Includedir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib"
     }
 
     filter "system:windows"
