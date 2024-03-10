@@ -10,9 +10,9 @@ workspace "REngine";
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
--- Include directories relative ro root folder
-Includedir = {}
-Includedir["GLFW"] = "REngine/vendor/GLFW/include"
+-- Include directories relative to root folder
+IncludeDir = {}
+IncludeDir["GLFW"] = "REngine/vendor/GLFW/include"
 
 include "REngine/vendor/GLFW"
 
@@ -39,8 +39,8 @@ project "REngine"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
-        "%{Includedir.GLFW}"
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
     }
 
     links
