@@ -37,17 +37,17 @@ project "REngine"
     }
 
     includedirs
-    {
-        "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}"
-    }
+	{
+		"%{prj.name}/src",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
 
-    links
-    {
-        "GLFW",
-        "opengl32.lib"
-    }
+	links 
+	{ 
+		"GLFW",
+		"opengl32.lib"
+	}
 
     filter "system:windows"
         cppdialect "C++17"

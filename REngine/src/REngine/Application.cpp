@@ -8,6 +8,7 @@ namespace REngine
 {
     Application::Application()
     {
+        m_window = std::unique_ptr<Window>(Window::Create());
     }
 
     Application::~Application()
@@ -16,8 +17,9 @@ namespace REngine
 
     void Application::Run()
     {
-        WindowResizeEvent e(1920, 1080);
-        RE_TRACE(e);
-        while (true);
+        while (m_running)
+        {
+            m_window->OnUpdate();
+        }
     }
 }
