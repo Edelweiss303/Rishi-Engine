@@ -64,4 +64,9 @@ namespace REngine
 
         m_data.VSync = enabled;
     }
+
+    bool WindowsWindow::IsVSync() const
+    {
+        return m_data.VSync;
+    }
 }
