@@ -65,8 +65,9 @@ namespace REngine
         {
             return GetCategoryFlags() & category;
         }
-    protected:
-        bool m_Handled = false;
+
+    public:
+        bool Handled = false;
     };
 
     class EventDispatcher
@@ -85,7 +86,7 @@ namespace REngine
             // if the event type we're trying to handle matches the template type, run the function
             if (m_event.GetEventType() == T::GetStaticType())
             {
-                m_event.m_Handled = func(*(T*)&m_event);
+                m_event.Handled = func(*(T*)&m_event);
                 return true; 
             }
             return false;

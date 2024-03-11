@@ -10,7 +10,7 @@ namespace REngine
 
     static void GLFWErrorCallback(int error, const char* description)
     {
-        RE_CORE_ERROR("GLLFW Error ({0}): {1}", error, description);
+        RE_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
     }
 
     Window* Window::Create(const WindowProps& props)
@@ -58,6 +58,7 @@ namespace REngine
                 data.Width = width;
                 data.Height = height;
 
+                // EventCallback is the constructor of the associated event
                 WindowResizeEvent event(width, height);
                 data.EventCallback(event);
             });
