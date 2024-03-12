@@ -1,8 +1,11 @@
 #include "repch.h"
 #include "WindowsWindow.h"
+
 #include "REngine/Events/ApplicationEvent.h"
 #include "REngine/Events/KeyEvent.h"
 #include "REngine/Events/MouseEvent.h"
+
+#include <glad/glad.h>
 
 namespace REngine
 {
@@ -49,6 +52,9 @@ namespace REngine
         glfwMakeContextCurrent(m_window);
         glfwSetWindowUserPointer(m_window, &m_data);
         SetVSync(true);
+
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        RE_CORE_ASSERT(status, "Failed to initialize Glad!");
 
         // Set GLFW callbacks
         glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
