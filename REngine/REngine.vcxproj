@@ -156,7 +156,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLLoader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\REngine.h" />
     <ClInclude Include="src\REngine\Application.h" />
