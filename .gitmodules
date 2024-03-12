@@ -4,3 +4,6 @@
 [submodule "REngine/vendor/GLFW"]
 	path = REngine/vendor/GLFW
 	url = https://github.com/Edelweiss303/glfw.git
+[submodule "REngine/vendor/imgui"]
+	path = REngine/vendor/imgui
+	url = https://github.com/Edelweiss303/imgui.git

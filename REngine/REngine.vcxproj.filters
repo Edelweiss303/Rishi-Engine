@@ -4,6 +4,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
@@ -13,8 +16,17 @@
     <Filter Include="REngine\Events">
       <UniqueIdentifier>{91C9B1D3-7D97-A5D9-662B-16005298813E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="REngine\ImGui">
+      <UniqueIdentifier>{37113116-A3D1-AC4C-6C0C-F6C9D88BF128}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3_loader.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -40,6 +52,9 @@
     <ClInclude Include="src\REngine\Events\MouseEvent.h">
       <Filter>REngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\REngine\ImGui\ImGuiLayer.h">
+      <Filter>REngine\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\REngine\Layer.h">
       <Filter>REngine</Filter>
     </ClInclude>
@@ -55,11 +70,17 @@
     <ClInclude Include="src\REpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\REngine\Application.cpp">
       <Filter>REngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\REngine\ImGui\ImGuiLayer.cpp">
+      <Filter>REngine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\REngine\Layer.cpp">
       <Filter>REngine</Filter>
