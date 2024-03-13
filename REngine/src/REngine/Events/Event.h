@@ -25,6 +25,7 @@ namespace REngine
 
         KeyPressed, 
         KeyReleased,
+        KeyTyped,
 
         MouseButtonPressed, 
         MouseButtonReleased, 
