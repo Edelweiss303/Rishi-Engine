@@ -20,6 +20,8 @@ include "REngine/vendor/GLFW"
 include "REngine/vendor/Glad"
 include "REngine/vendor/imgui"
 
+startproject "Sandbox"
+
 project "REngine"
 
     location "REngine"
