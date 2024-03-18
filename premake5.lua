@@ -1,6 +1,7 @@
 workspace "REngine";
     architecture "x64"
-
+    startproject "Sandbox"
+     
     configurations
     {
             "Debug",
@@ -16,13 +17,12 @@ IncludeDir["GLFW"] = "REngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "REngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "REngine/vendor/imgui"
 
+
 group "Dependencies"
     include "REngine/vendor/GLFW"
     include "REngine/vendor/Glad"
     include "REngine/vendor/imgui"
 group ""
-
-startproject "Sandbox"
 
 project "REngine"
 
@@ -76,7 +76,7 @@ project "REngine"
     
         postbuildcommands
         {
-            postbuildcommands{("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")}
+            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
         }
 
     filter "configurations:Debug"
