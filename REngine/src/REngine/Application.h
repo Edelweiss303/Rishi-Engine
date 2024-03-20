@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "REngine/LayerStack.h"
 #include "REngine/Events/ApplicationEvent.h"
+#include "Input.h"
 
 namespace REngine
 {

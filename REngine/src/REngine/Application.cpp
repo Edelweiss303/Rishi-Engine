@@ -28,7 +28,6 @@ namespace REngine
             for (Layer* layer : m_layerStack)
                 layer->OnUpdate();
 
-
             m_window->OnUpdate();
         }
     }
