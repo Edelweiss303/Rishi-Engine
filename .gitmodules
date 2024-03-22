@@ -7,3 +7,6 @@
 [submodule "REngine/vendor/imgui"]
 	path = REngine/vendor/imgui
 	url = https://github.com/Edelweiss303/imgui.git
+[submodule "REngine/vendor/glm"]
+	path = REngine/vendor/glm
+	url = https://github.com/Edelweiss303/glm.git

@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "REngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "REngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "REngine/vendor/imgui"
+IncludeDir["glm"] = "REngine/vendor/glm"
 
 
 group "Dependencies"
@@ -42,7 +43,9 @@ project "REngine"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/glm/glm/**.hpp",
+        "%{prj.name}/vendor/glm/glm/**.inl",
     }
 
     includedirs
@@ -51,7 +54,8 @@ project "REngine"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links 
@@ -117,7 +121,8 @@ project "Sandbox"
     includedirs
     {
         "REngine/vendor/spdlog/include",
-        "REngine/src"
+        "REngine/src",
+        "%{IncludeDir.glm}"
     }
 
     links
