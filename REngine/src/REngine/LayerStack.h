@@ -23,7 +23,7 @@ namespace REngine
 
     private:
         std::vector<Layer*> m_layers;
-        std::vector<Layer*>::iterator m_layerInsert;
+        unsigned int m_layerInsertIndex = 0;
     };
 }
 

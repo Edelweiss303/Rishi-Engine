@@ -5,7 +5,6 @@ namespace REngine
 {
     REngine::LayerStack::LayerStack()
     {
-        m_layerInsert = m_layers.begin();
     }
 
     REngine::LayerStack::~LayerStack()
@@ -16,7 +15,8 @@ namespace REngine
 
     void REngine::LayerStack::PushLayer(Layer* layer)
     {
-        m_layerInsert = m_layers.emplace(m_layerInsert, layer);
+        m_layers.emplace(m_layers.begin() + m_layerInsertIndex, layer);
+        m_layerInsertIndex++;
     }
 
     void REngine::LayerStack::PushOverlay(Layer* overlay)
@@ -30,7 +30,7 @@ namespace REngine
         if (it != m_layers.end())
         {
             m_layers.erase(it);
-            m_layerInsert--;
+            m_layerInsertIndex--;
         }
     }
 

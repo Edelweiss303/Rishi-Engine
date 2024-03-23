@@ -122,6 +122,7 @@ project "Sandbox"
     {
         "REngine/vendor/spdlog/include",
         "REngine/src",
+        "REngine/vendor",
         "%{IncludeDir.glm}"
     }
 

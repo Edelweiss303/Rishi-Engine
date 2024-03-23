@@ -15,6 +15,9 @@ namespace REngine
         s_instance = this;
         m_window = std::unique_ptr<Window>(Window::Create());
         m_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
 
     Application::~Application()
@@ -28,6 +31,12 @@ namespace REngine
             for (Layer* layer : m_layerStack)
                 layer->OnUpdate();
 
+            m_ImGuiLayer->Begin(); 
+
+            for (Layer* layer : m_layerStack)
+                layer->OnImGuiRender();
+
+            m_ImGuiLayer->End();
             m_window->OnUpdate();
         }
     }

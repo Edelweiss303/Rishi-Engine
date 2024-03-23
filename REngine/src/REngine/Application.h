@@ -6,6 +6,8 @@
 #include "REngine/Events/ApplicationEvent.h"
 #include "Input.h"
 
+#include "REngine/ImGui/ImguiLayer.h"
+
 namespace REngine
 {
     class RE_API Application
@@ -27,6 +29,7 @@ namespace REngine
 
     private:
         std::unique_ptr<Window> m_window;
+        ImGuiLayer* m_ImGuiLayer;
         bool m_running = true;
         LayerStack m_layerStack;
 
