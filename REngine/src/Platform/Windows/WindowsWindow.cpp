@@ -4,8 +4,7 @@
 #include "REngine/Events/ApplicationEvent.h"
 #include "REngine/Events/KeyEvent.h"
 #include "REngine/Events/MouseEvent.h"
-
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace REngine
 {
@@ -49,12 +48,14 @@ namespace REngine
         }
 
         m_window = glfwCreateWindow((int)props.Width, (int)props.Height, m_data.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_window);
+
+        m_context = new OpenGLContext(m_window);
+        m_context->Init();
+
+       
         glfwSetWindowUserPointer(m_window, &m_data);
         SetVSync(true);
 
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        RE_CORE_ASSERT(status, "Failed to initialize Glad!");
 
         // Set GLFW callbacks
         glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
@@ -158,7 +159,7 @@ namespace REngine
     void WindowsWindow::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_window);
+        m_context->SwapBuffers();
     }
 
     void WindowsWindow::SetVSync(bool enabled)

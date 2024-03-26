@@ -1,6 +1,7 @@
 #pragma once
 
 #include "REngine/Window.h"
+#include "REngine/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 
 namespace REngine
@@ -29,6 +30,7 @@ namespace REngine
 
     private:
         GLFWwindow* m_window;
+        GraphicsContext* m_context;
 
         struct WindowData
         {
