@@ -28,9 +28,10 @@ group ""
 project "REngine"
 
     location "REngine"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -46,6 +47,11 @@ project "REngine"
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/vendor/glm/glm/**.hpp",
         "%{prj.name}/vendor/glm/glm/**.inl",
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     includedirs
@@ -67,7 +73,6 @@ project "REngine"
 	}
 
     filter "system:windows"
-        cppdialect "C++17"
         systemversion "latest"
 
 
@@ -77,26 +82,21 @@ project "REngine"
             "RE_BUILD_DLL",
             "GLFW_INCLUDE_NONE"
         }
-    
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-        }
 
     filter "configurations:Debug"
         defines "RE_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines "RE_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "RE_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     
     
@@ -105,7 +105,8 @@ project "Sandbox"
     location "Sandbox"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -132,10 +133,8 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
-
 
         defines
         {
@@ -144,15 +143,15 @@ project "Sandbox"
 
     filter "configurations:Debug"
         defines "RE_DEBUG"
-        buildoptions "/MDd"
-        symbols "On"
+        runtime "Debug"
+        symbols "on"
 
     filter "configurations:Release"
         defines "RE_RELEASE"
-        buildoptions "/MD"
-        optimize "On"
+        runtime "Release"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "RE_DIST"
-        buildoptions "/MD"
-        optimize "On"
+        runtime "Release"
+        optimize "on"

@@ -1,11 +1,16 @@
 #pragma once
 
 #ifdef RE_PLATFORM_WINDOWS
+#if RE_DYNAMIC_LINK
     #ifdef RE_BUILD_DLL
         #define RE_API __declspec(dllexport)
     #else
         #define RE_API __declspec(dllimport)
     #endif
+#else
+    #define RE_API
+#endif
+
 #else
     #error Rishi Engine only supports Windows!
 #endif
