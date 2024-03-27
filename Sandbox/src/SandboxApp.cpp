@@ -10,12 +10,10 @@ public:
 
     void OnUpdate() override
     {
-        RE_INFO("ExampleLayer::Update");
     }
 
     void OnEvent(REngine::Event& event) override
     {
-        RE_TRACE("{0}", event);
     }
 
     virtual void OnImGuiRender() override

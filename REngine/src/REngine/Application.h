@@ -27,6 +27,10 @@ namespace REngine
     private:
         bool OnWindowClose(WindowCloseEvent& e);
 
+        unsigned int m_vertexArray;
+        unsigned int m_vertexBuffer;
+        unsigned int m_indexBuffer;
+
     private:
         std::unique_ptr<Window> m_window;
         ImGuiLayer* m_ImGuiLayer;
