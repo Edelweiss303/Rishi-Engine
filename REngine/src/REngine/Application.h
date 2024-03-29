@@ -8,6 +8,8 @@
 
 #include "REngine/ImGui/ImguiLayer.h"
 
+#include "REngine/Renderer/Shader.h"
+
 namespace REngine
 {
     class RE_API Application
@@ -30,6 +32,8 @@ namespace REngine
         unsigned int m_vertexArray;
         unsigned int m_vertexBuffer;
         unsigned int m_indexBuffer;
+        
+        std::unique_ptr<Shader> m_shader;
 
     private:
         std::unique_ptr<Window> m_window;
