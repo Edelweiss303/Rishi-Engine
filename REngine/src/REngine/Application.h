@@ -9,8 +9,8 @@
 #include "REngine/ImGui/ImguiLayer.h"
 
 #include "REngine/Renderer/Shader.h"
-
 #include "REngine/Renderer/Buffer.h"
+#include "REngine/Renderer/VertexArray.h"
 
 namespace REngine
 {
@@ -31,11 +31,10 @@ namespace REngine
     private:
         bool OnWindowClose(WindowCloseEvent& e);
 
-        unsigned int m_vertexArray;
-        
         std::unique_ptr<Shader> m_shader;
         std::unique_ptr<VertexBuffer> m_vertexBuffer;
         std::unique_ptr<IndexBuffer> m_indexBuffer;
+        std::unique_ptr<VertexArray> m_vertexArray;
 
     private:
         std::unique_ptr<Window> m_window;

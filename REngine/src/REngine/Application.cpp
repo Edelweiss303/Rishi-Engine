@@ -19,9 +19,6 @@ namespace REngine
 
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
-
-        glGenVertexArrays(1, &m_vertexArray);
-        glBindVertexArray(m_vertexArray);
         
         float vertices[3 * 3] =
         {
@@ -30,16 +27,8 @@ namespace REngine
             0.0f, 0.5f, 0.0f,
         };
 
-        m_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
         uint32_t indices[3] = { 0, 1, 2 };
-        m_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
-
         std::string vertexSrc = R"(
             #version 330 core
 
@@ -65,7 +54,12 @@ namespace REngine
             }
         )";
 
-        m_shader.reset(new Shader(vertexSrc, fragmentSrc));
+        m_vertexArray.reset(VertexArray::Create(vertices, sizeof(vertices)));
+        m_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+        m_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+        m_shader.reset(Shader::Create(vertexSrc, fragmentSrc));
+
+        m_vertexArray->Enable();
     }
 
     Application::~Application()
@@ -80,8 +74,8 @@ namespace REngine
             glClear(GL_COLOR_BUFFER_BIT);
 
             m_shader->Bind();
+            m_vertexArray->Bind();
 
-            glBindVertexArray(m_vertexArray);
             glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_layerStack)

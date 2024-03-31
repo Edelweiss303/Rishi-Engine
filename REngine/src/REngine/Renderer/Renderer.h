@@ -2,6 +2,8 @@
 
 namespace REngine
 {
+    // class enums are safer because they
+    // don't implicitly convert to other types
     enum class RendererAPI
     {
         None = 0,
