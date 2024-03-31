@@ -10,6 +10,8 @@
 
 #include "REngine/Renderer/Shader.h"
 
+#include "REngine/Renderer/Buffer.h"
+
 namespace REngine
 {
     class RE_API Application
@@ -30,10 +32,10 @@ namespace REngine
         bool OnWindowClose(WindowCloseEvent& e);
 
         unsigned int m_vertexArray;
-        unsigned int m_vertexBuffer;
-        unsigned int m_indexBuffer;
         
         std::unique_ptr<Shader> m_shader;
+        std::unique_ptr<VertexBuffer> m_vertexBuffer;
+        std::unique_ptr<IndexBuffer> m_indexBuffer;
 
     private:
         std::unique_ptr<Window> m_window;
