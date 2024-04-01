@@ -10,27 +10,6 @@ namespace REngine
 
     Application* Application::s_instance = nullptr;
 
-    static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-    {
-        switch (type)
-        {
-        case ShaderDataType::Float:   return GL_FLOAT;
-        case ShaderDataType::Float2:  return GL_FLOAT;
-        case ShaderDataType::Float3:  return GL_FLOAT;
-        case ShaderDataType::Float4:  return GL_FLOAT;
-        case ShaderDataType::Mat3:    return GL_FLOAT;
-        case ShaderDataType::Mat4:    return GL_FLOAT;
-        case ShaderDataType::Int:     return GL_INT;
-        case ShaderDataType::Int2:    return GL_INT;
-        case ShaderDataType::Int3:    return GL_INT;
-        case ShaderDataType::Int4:    return GL_INT;
-        case ShaderDataType::Bool:    return GL_BOOL;
-        }
-
-        RE_CORE_ASSERT(false, "Unknown ShaderDatatype.");
-        return 0;
-    }
-
     Application::Application()
     {
         RE_CORE_ASSERT(!s_instance, "Application already exists!")
@@ -49,6 +28,16 @@ namespace REngine
         };
 
         uint32_t indices[3] = { 0, 1, 2 };
+
+        float squareVertices[3 * 4] =
+        {
+           -0.75f, -0.75f, 0.0f,
+            0.75f, -0.75f, 0.0f,
+            0.75f,  0.75f, 0.0f,
+           -0.75f,  0.75f, 0.0f
+        };
+
+        uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
         std::string vertexSrc = R"(
             #version 330 core
@@ -81,41 +70,74 @@ namespace REngine
                 color = v_color;
             }
         )";
+        std::string blueShaderVertexSrc = R"(
+            #version 330 core
 
-        m_vertexArray.reset(VertexArray::Create(vertices, sizeof(vertices)));
-        
-        m_vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+            layout(location = 0) in vec3 a_position;
 
-        {
-            BufferLayout layout =
+            out vec3 v_position;
+
+            void main()
             {
-                { ShaderDataType::Float3, "a_position" },
-                { ShaderDataType::Float4, "a_color" }
-            };
+                v_position = a_position;
+                gl_Position = vec4(a_position, 1.0);
+            }
+        )";
 
-            m_vertexBuffer->SetLayout(layout);
-        }
+        std::string blueShaderFragmentSrc = R"(
+            #version 330 core
 
-        uint32_t index = 0;
-        const auto& layout = m_vertexBuffer->GetLayout();
+            layout(location = 0) out vec4 color;
+            
+            in vec3 v_position;
 
-        for (const auto& element : layout)
+            void main()
+            {
+                color = vec4(0.2, 0.3, 0.8, 1.0);
+            }
+        )"; 
+
+        BufferLayout layout =
         {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer(
-                index, 
-                element.GetComponentCount(), 
-                ShaderDataTypeToOpenGLBaseType(element.Type), 
-                element.Normalized ? GL_TRUE: GL_FALSE, 
-                layout.GetStride(),
-                (const void*)element.Offset
-            );
+            { ShaderDataType::Float3, "a_position" },
+            { ShaderDataType::Float4, "a_color" }
+        };
 
-            index++;
-        }
+        BufferLayout squareLayout =
+        {
+            { ShaderDataType::Float3, "a_position" }
+        };
 
-        m_indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+        m_vertexArray.reset(VertexArray::Create());
+
+        std::shared_ptr<VertexBuffer> vertexBuffer;
+        vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+        std::shared_ptr<IndexBuffer> indexBuffer;
+        indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+        
+        vertexBuffer->SetLayout(layout);
+        
+        m_vertexArray->AddVertexBuffer(vertexBuffer);
+        m_vertexArray->SetIndexBuffer(indexBuffer);
+
         m_shader.reset(Shader::Create(vertexSrc, fragmentSrc));
+        
+        
+        m_squareVertexArray.reset(VertexArray::Create()); 
+        
+        std::shared_ptr<VertexBuffer> squareVertexBuffer;
+        squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+
+        std::shared_ptr<IndexBuffer> squareIndexBuffer;
+        squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        
+        squareVertexBuffer->SetLayout(squareLayout);
+
+        m_squareVertexArray->AddVertexBuffer(squareVertexBuffer);
+        m_squareVertexArray->SetIndexBuffer(squareIndexBuffer);        
+        
+        m_blueShader.reset(Shader::Create(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
     Application::~Application()
@@ -129,10 +151,15 @@ namespace REngine
             glClearColor(0.1f, 0.1f, 0.1f, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            m_blueShader->Bind();
+            m_squareVertexArray->Bind();
+
+            glDrawElements(GL_TRIANGLES, m_squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
             m_shader->Bind();
             m_vertexArray->Bind();
 
-            glDrawElements(GL_TRIANGLES, m_indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, m_vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_layerStack)
                 layer->OnUpdate();

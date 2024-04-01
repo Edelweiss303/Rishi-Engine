@@ -7,7 +7,7 @@
 
 namespace REngine
 {
-    VertexArray* VertexArray::Create(float* vertices, uint32_t size)
+    VertexArray* VertexArray::Create()
     {
         switch (Renderer::GetAPI())
         {
@@ -16,7 +16,7 @@ namespace REngine
             return nullptr;
             break;
         case RendererAPI::OpenGL:
-            return new OpenGLVertexArray(vertices, size);
+            return new OpenGLVertexArray();
             break;
         default:
             RE_CORE_ASSERT(false, "Unknown RendererAPI");

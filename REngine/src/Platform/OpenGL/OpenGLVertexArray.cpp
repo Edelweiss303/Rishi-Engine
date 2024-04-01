@@ -5,28 +5,81 @@
 
 namespace REngine
 {
-    OpenGLVertexArray::OpenGLVertexArray(float* vertices, uint32_t size)
+    static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
     {
-        glCreateVertexArrays(1, &m_vertexArray);
-        glBindVertexArray(m_vertexArray);
+        switch (type)
+        {
+        case ShaderDataType::Float:   return GL_FLOAT;
+        case ShaderDataType::Float2:  return GL_FLOAT;
+        case ShaderDataType::Float3:  return GL_FLOAT;
+        case ShaderDataType::Float4:  return GL_FLOAT;
+        case ShaderDataType::Mat3:    return GL_FLOAT;
+        case ShaderDataType::Mat4:    return GL_FLOAT;
+        case ShaderDataType::Int:     return GL_INT;
+        case ShaderDataType::Int2:    return GL_INT;
+        case ShaderDataType::Int3:    return GL_INT;
+        case ShaderDataType::Int4:    return GL_INT;
+        case ShaderDataType::Bool:    return GL_BOOL;
+        }
+
+        RE_CORE_ASSERT(false, "Unknown ShaderDatatype.");
+        return 0;
     }
 
-    
+    OpenGLVertexArray::OpenGLVertexArray()
+    {
+        glCreateVertexArrays(1, &m_rendererID);
+    }
+
     OpenGLVertexArray::~OpenGLVertexArray()
     {
-        glDeleteProgram(m_vertexArray);
+        glDeleteVertexArrays(1, &m_rendererID);
     }
-    void OpenGLVertexArray::Enable() const
-    {
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    }
+
     void OpenGLVertexArray::Bind() const
     {
-        glBindVertexArray(m_vertexArray);
+        glBindVertexArray(m_rendererID);
     }
+
     void OpenGLVertexArray::Unbind() const
     {
         glBindVertexArray(0);
+    }
+
+    void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+    {
+        RE_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout.");
+        
+        glBindVertexArray(m_rendererID);
+        vertexBuffer->Bind();
+
+
+        uint32_t index = 0;
+        const auto& layout = vertexBuffer->GetLayout();
+
+        for (const auto& element : layout)
+        {
+            glEnableVertexAttribArray(index);
+            glVertexAttribPointer(
+                index,
+                element.GetComponentCount(),
+                ShaderDataTypeToOpenGLBaseType(element.Type),
+                element.Normalized ? GL_TRUE : GL_FALSE,
+                layout.GetStride(),
+                (const void*)element.Offset
+            );
+
+            index++;
+        }
+
+        m_vertexBuffers.push_back(vertexBuffer);
+    }
+
+    void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    {
+        glBindVertexArray(m_rendererID);
+        indexBuffer->Bind();
+
+        m_indexBuffer = indexBuffer;
     }
 }
