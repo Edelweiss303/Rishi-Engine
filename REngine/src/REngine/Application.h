@@ -11,6 +11,7 @@
 #include "REngine/Renderer/VertexArray.h"
 #include "REngine/Renderer/Shader.h"
 #include "REngine/Renderer/Buffer.h"
+#include "REngine/Renderer/Renderer.h"
 
 namespace REngine
 {

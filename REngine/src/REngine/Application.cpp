@@ -1,8 +1,9 @@
-#include "repch.h"
+#include "REpch.h"
 #include "Application.h"
 
-#include "REngine/log.h"
-#include "glad/glad.h"
+#include "log.h"
+
+#include "Renderer/Renderer.h"
 
 namespace REngine
 {
@@ -148,18 +149,18 @@ namespace REngine
     {
         while (m_running)
         {
-            glClearColor(0.1f, 0.1f, 0.1f, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+            RenderCommand::Clear();
+
+            Renderer::BeginScene();
 
             m_blueShader->Bind();
-            m_squareVertexArray->Bind();
-
-            glDrawElements(GL_TRIANGLES, m_squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_squareVertexArray);
 
             m_shader->Bind();
-            m_vertexArray->Bind();
+            Renderer::Submit(m_vertexArray);
 
-            glDrawElements(GL_TRIANGLES, m_vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::EndScene();
 
             for (Layer* layer : m_layerStack)
                 layer->OnUpdate();
