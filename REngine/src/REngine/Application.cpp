@@ -12,6 +12,7 @@ namespace REngine
     Application* Application::s_instance = nullptr;
 
     Application::Application()
+        :camera(-1.6f, 1.6f, -.9f, 0.9f)
     {
         RE_CORE_ASSERT(!s_instance, "Application already exists!")
         s_instance = this;
@@ -46,6 +47,8 @@ namespace REngine
             layout(location = 0) in vec3 a_position;
             layout(location = 1) in vec4 a_color;
 
+            uniform mat4 viewProjectionMatrix;
+
             out vec3 v_position;
             out vec4 v_color;
 
@@ -53,7 +56,7 @@ namespace REngine
             {
                 v_position = a_position;
                 v_color = a_color;
-                gl_Position = vec4(a_position, 1.0);
+                gl_Position = viewProjectionMatrix * vec4(a_position, 1.0);
             }
         )";
 
@@ -76,12 +79,14 @@ namespace REngine
 
             layout(location = 0) in vec3 a_position;
 
+            uniform mat4 viewProjectionMatrix;
+
             out vec3 v_position;
 
             void main()
             {
                 v_position = a_position;
-                gl_Position = vec4(a_position, 1.0);
+                gl_Position = viewProjectionMatrix * vec4(a_position, 1.0);
             }
         )";
 
@@ -152,13 +157,13 @@ namespace REngine
             RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
             RenderCommand::Clear();
 
-            Renderer::BeginScene();
+            camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+            camera.SetRotation(45.0f);
 
-            m_blueShader->Bind();
-            Renderer::Submit(m_squareVertexArray);
+            Renderer::BeginScene(camera);
 
-            m_shader->Bind();
-            Renderer::Submit(m_vertexArray);
+            Renderer::Submit(m_blueShader, m_squareVertexArray);
+            Renderer::Submit(m_shader, m_vertexArray);
 
             Renderer::EndScene();
 

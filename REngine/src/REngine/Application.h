@@ -12,6 +12,7 @@
 #include "REngine/Renderer/Shader.h"
 #include "REngine/Renderer/Buffer.h"
 #include "REngine/Renderer/Renderer.h"
+#include "REngine/Renderer/OrthographicCamera.h"
 
 namespace REngine
 {
@@ -37,6 +38,8 @@ namespace REngine
 
         std::shared_ptr<Shader> m_blueShader;
         std::shared_ptr<VertexArray> m_squareVertexArray;
+
+        OrthographicCamera camera;
 
     private:
         std::unique_ptr<Window> m_window;

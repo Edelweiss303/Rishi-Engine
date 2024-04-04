@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace REngine
 {
@@ -107,16 +108,26 @@ namespace REngine
         glDetachShader(m_rendererID, vertexShader);
         glDetachShader(m_rendererID, fragmentShader);
     }
+
     OpenGLShader::~OpenGLShader()
     {
         glDeleteProgram(m_rendererID);
     }
+
     void OpenGLShader::Bind() const
     {
         glUseProgram(m_rendererID);
     }
+
     void OpenGLShader::Unbind() const
     {
         glUseProgram(0);
+    }
+
+    void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) const
+    {
+        // Upload our mat4 into our shaders
+        GLint location = glGetUniformLocation(m_rendererID, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 }
