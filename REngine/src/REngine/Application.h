@@ -40,7 +40,7 @@ namespace REngine
 
     private:
         std::unique_ptr<Window> m_window;
-        ImGuiLayer* m_ImGuiLayer;
+        ImGuiLayer* m_imGuiLayer;
         bool m_running = true;
         LayerStack m_layerStack;
 
