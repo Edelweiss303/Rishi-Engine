@@ -3,17 +3,17 @@
 
 namespace REngine
 {
-    Renderer::SceneData* Renderer::sceneData = new Renderer::SceneData;
+    Renderer::SceneData* Renderer::s_sceneData = new Renderer::SceneData;
 
-    void Renderer::BeginScene(OrthographicCamera& cam)
+    void Renderer::BeginScene(OrthographicCamera& camera)
     {
-        sceneData->ViewProjectionMatrix = cam.GetViewProjectionMatrix();
+        s_sceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
     void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
     {
         shader->Bind();
-        shader->UploadUniformMat4("viewProjectionMatrix", sceneData->ViewProjectionMatrix);
+        shader->UploadUniformMat4("viewProjectionMatrix", s_sceneData->ViewProjectionMatrix);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

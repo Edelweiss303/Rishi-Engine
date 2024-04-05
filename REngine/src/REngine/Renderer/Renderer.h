@@ -9,7 +9,7 @@ namespace REngine
     class Renderer
     {
     public:
-        static void BeginScene(OrthographicCamera& cam);
+        static void BeginScene(OrthographicCamera& camera);
         static void EndScene();
         
         static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
@@ -22,7 +22,7 @@ namespace REngine
             glm::mat4 ViewProjectionMatrix;
         };
 
-        static SceneData* sceneData;
+        static SceneData* s_sceneData;
     }; 
     
 }
