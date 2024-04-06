@@ -65,7 +65,9 @@ namespace REngine
                 data.Width = width;
                 data.Height = height;
 
-                // EventCallback is the constructor of the associated event
+                // calls the event callback function, 
+                // with whatever event GLFW sent, as a paramater
+
                 WindowResizeEvent event(width, height);
                 data.EventCallback(event);
             });

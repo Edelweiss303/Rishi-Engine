@@ -174,6 +174,7 @@
     <ClInclude Include="src\REngine\Renderer\Shader.h" />
     <ClInclude Include="src\REngine\Window.h" />
     <ClInclude Include="src\REpch.h" />
+    <ClInclude Include="src\REngine\Core\TimeStep.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -616,6 +617,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\REngine\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\REngine\Core\TimeStep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

@@ -9,6 +9,7 @@
 #include "REngine/Layer.h"
 #include "REngine/Log.h"
 #include "REngine/MouseButtonCodes.h"
+#include "REngine/Core/Timestep.h"
 
 // ------------ RENDERER -----------
 #include "REngine/Renderer/Renderer.h"

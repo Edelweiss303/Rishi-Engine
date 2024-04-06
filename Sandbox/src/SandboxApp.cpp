@@ -130,21 +130,23 @@ public:
         m_blueShader.reset(REngine::Shader::Create(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
-    void OnUpdate() override
+    void OnUpdate(REngine::TimeStep ts) override
     {
+        RE_TRACE("Delta time: {0}s", ts);
+
         if (REngine::Input::IsKeyPressed(RE_KEY_LEFT))
-            m_cameraPosition.x -= m_cameraMoveSpeed;
+            m_cameraPosition.x -= m_cameraMoveSpeed * ts;
         if (REngine::Input::IsKeyPressed(RE_KEY_RIGHT))
-            m_cameraPosition.x += m_cameraMoveSpeed;
+            m_cameraPosition.x += m_cameraMoveSpeed * ts;
         if (REngine::Input::IsKeyPressed(RE_KEY_UP))
-            m_cameraPosition.y += m_cameraMoveSpeed;
+            m_cameraPosition.y += m_cameraMoveSpeed * ts;
         if (REngine::Input::IsKeyPressed(RE_KEY_DOWN))
-            m_cameraPosition.y -= m_cameraMoveSpeed;
+            m_cameraPosition.y -= m_cameraMoveSpeed * ts;
 
         if (REngine::Input::IsKeyPressed(RE_KEY_Q))
-            m_cameraRotation += m_cameraRotationSpeed;
+            m_cameraRotation += m_cameraRotationSpeed * ts;
         if (REngine::Input::IsKeyPressed(RE_KEY_E))
-            m_cameraRotation -= m_cameraRotationSpeed;
+            m_cameraRotation -= m_cameraRotationSpeed * ts;
 
         REngine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         REngine::RenderCommand::Clear();
@@ -174,8 +176,8 @@ private:
     REngine::OrthographicCamera camera;
     glm::vec3 m_cameraPosition;
     float m_cameraRotation = 0;
-    float m_cameraMoveSpeed = 0.05f;
-    float m_cameraRotationSpeed = 1.0f;
+    float m_cameraMoveSpeed = 5.0f;
+    float m_cameraRotationSpeed = 15.0f;
 
 };
 

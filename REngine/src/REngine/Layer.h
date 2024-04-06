@@ -1,6 +1,7 @@
 #pragma once
 #include "REngine/Core.h"
 #include "REngine/Events/Event.h"
+#include "REngine/Core/TimeStep.h"
 
 namespace REngine
 {
@@ -12,7 +13,7 @@ namespace REngine
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(TimeStep ts) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
 

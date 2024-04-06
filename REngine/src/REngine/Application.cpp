@@ -5,6 +5,8 @@
 
 #include "Renderer/Renderer.h"
 
+#include <GLFW/glfw3.h>
+
 namespace REngine
 {
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -17,7 +19,7 @@ namespace REngine
         s_instance = this;
         m_window = std::unique_ptr<Window>(Window::Create());
         m_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
-
+        m_window->SetVSync(false);
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
         
@@ -32,8 +34,13 @@ namespace REngine
     {
         while (m_running)
         {
+            float time = (float) glfwGetTime(); // should be Platform::GetTime()
+
+            TimeStep timeStep = time - m_lastFrameTime;
+            m_lastFrameTime = time;
+
             for (Layer* layer : m_layerStack)
-                layer->OnUpdate();
+                layer->OnUpdate(timeStep);
 
             m_imGuiLayer->Begin(); 
 
