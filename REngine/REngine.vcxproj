@@ -617,7 +617,6 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\REngine\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\REngine\Core\TimeStep.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

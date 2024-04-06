@@ -142,7 +142,7 @@ namespace REngine
 
                 MouseScrolledEvent event((float)xOffset, (float)yOffset);
                 data.EventCallback(event);
-            });
+            });  
 
         glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xPos, double yPos)
             {

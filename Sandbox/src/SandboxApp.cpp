@@ -1,10 +1,11 @@
 #include <REngine.h>
 #include "imgui/imgui.h"
+#include <glm/ext/matrix_transform.hpp>
 class ExampleLayer : public REngine::Layer
 {
 public:
     ExampleLayer()
-        :Layer("Example"), camera(-1.6f, 1.6f, -.9f, 0.9f), m_cameraPosition(0.0f)
+        :Layer("Example"), camera(-1.6f, 1.6f, -.9f, 0.9f), m_cameraPosition(0.0f), m_squarePosition(0.0f)
     {
         float vertices[3 * 7] =
         {
@@ -17,10 +18,10 @@ public:
 
         float squareVertices[3 * 4] =
         {
-           -0.75f, -0.75f, 0.0f,
-            0.75f, -0.75f, 0.0f,
-            0.75f,  0.75f, 0.0f,
-           -0.75f,  0.75f, 0.0f
+           -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            0.5f,  0.5f, 0.0f,
+           -0.5f,  0.5f, 0.0f
         };
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
@@ -32,6 +33,7 @@ public:
             layout(location = 1) in vec4 a_color;
 
             uniform mat4 viewProjectionMatrix;
+            uniform mat4 transform;
 
             out vec3 v_position;
             out vec4 v_color;
@@ -40,7 +42,7 @@ public:
             {
                 v_position = a_position;
                 v_color = a_color;
-                gl_Position = viewProjectionMatrix * vec4(a_position, 1.0);
+                gl_Position = viewProjectionMatrix * transform * vec4(a_position, 1.0);
             }
         )";
 
@@ -64,13 +66,14 @@ public:
             layout(location = 0) in vec3 a_position;
 
             uniform mat4 viewProjectionMatrix;
+            uniform mat4 transform;
 
             out vec3 v_position;
 
             void main()
             {
                 v_position = a_position;
-                gl_Position = viewProjectionMatrix * vec4(a_position, 1.0);
+                gl_Position = viewProjectionMatrix * transform * vec4(a_position, 1.0);
             }
         )";
 
@@ -132,15 +135,13 @@ public:
 
     void OnUpdate(REngine::TimeStep ts) override
     {
-        RE_TRACE("Delta time: {0}s", ts);
-
-        if (REngine::Input::IsKeyPressed(RE_KEY_LEFT))
+        if (REngine::Input::IsKeyPressed(RE_KEY_A))
             m_cameraPosition.x -= m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_RIGHT))
+        if (REngine::Input::IsKeyPressed(RE_KEY_D))
             m_cameraPosition.x += m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_UP))
+        if (REngine::Input::IsKeyPressed(RE_KEY_W))
             m_cameraPosition.y += m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_DOWN))
+        if (REngine::Input::IsKeyPressed(RE_KEY_S))
             m_cameraPosition.y -= m_cameraMoveSpeed * ts;
 
         if (REngine::Input::IsKeyPressed(RE_KEY_Q))
@@ -156,9 +157,20 @@ public:
 
         REngine::Renderer::BeginScene(camera);
 
-        REngine::Renderer::Submit(m_blueShader, m_squareVertexArray);
-        REngine::Renderer::Submit(m_shader, m_vertexArray);
+        static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+        for (int x = 0; x < 20; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                glm::vec3 position(x * 0.11f, y * 0.11f, 0.0f);
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
+
+                REngine::Renderer::Submit(m_blueShader, m_squareVertexArray, transform);
+            }
+        }
+
+        REngine::Renderer::Submit(m_shader, m_vertexArray);
         REngine::Renderer::EndScene();
     }
 
@@ -177,8 +189,7 @@ private:
     glm::vec3 m_cameraPosition;
     float m_cameraRotation = 0;
     float m_cameraMoveSpeed = 5.0f;
-    float m_cameraRotationSpeed = 15.0f;
-
+    float m_cameraRotationSpeed = 20.0f;
 };
 
 class Sandbox : public REngine::Application
