@@ -10,6 +10,17 @@
 #include "REngine/Log.h"
 #include "REngine/MouseButtonCodes.h"
 
+// ------------ RENDERER -----------
+#include "REngine/Renderer/Renderer.h"
+#include "REngine/Renderer/RenderCommand.h"
+
+#include "REngine/Renderer/Buffer.h"
+#include "REngine/Renderer/Shader.h"
+#include "REngine/Renderer/VertexArray.h"
+
+#include "REngine/Renderer/OrthographicCamera.h"
+// ---------------------------------
+
 // ---------- ENTRY POINT ----------
 #include "REngine/EntryPoint.h"
-// ---------- ENTRY POINT ----------
+// ---------------------------------
