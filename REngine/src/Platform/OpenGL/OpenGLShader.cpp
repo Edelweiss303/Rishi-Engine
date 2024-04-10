@@ -124,6 +124,12 @@ namespace REngine
         glUseProgram(0);
     }
 
+    void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& vector) const
+    {
+        GLint location = glGetUniformLocation(m_rendererID, name.c_str());
+        glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+    }
+
     void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) const
     {
         // Upload our mat4 into our shaders

@@ -5,7 +5,7 @@ class ExampleLayer : public REngine::Layer
 {
 public:
     ExampleLayer()
-        :Layer("Example"), camera(-1.6f, 1.6f, -.9f, 0.9f), m_cameraPosition(0.0f), m_squarePosition(0.0f)
+        :Layer("Example"), camera(-1.6f, 1.6f, -.9f, 0.9f), m_cameraPosition(0.0f)
     {
         float vertices[3 * 7] =
         {
@@ -32,8 +32,8 @@ public:
             layout(location = 0) in vec3 a_position;
             layout(location = 1) in vec4 a_color;
 
-            uniform mat4 viewProjectionMatrix;
-            uniform mat4 transform;
+            uniform mat4 u_viewProjectionMatrix;
+            uniform mat4 u_transform;
 
             out vec3 v_position;
             out vec4 v_color;
@@ -42,7 +42,7 @@ public:
             {
                 v_position = a_position;
                 v_color = a_color;
-                gl_Position = viewProjectionMatrix * transform * vec4(a_position, 1.0);
+                gl_Position = u_viewProjectionMatrix * u_transform * vec4(a_position, 1.0);
             }
         )";
 
@@ -60,33 +60,35 @@ public:
                 color = v_color;
             }
         )";
-        std::string blueShaderVertexSrc = R"(
+        std::string flatColorShaderVertexSrc = R"(
             #version 330 core
 
             layout(location = 0) in vec3 a_position;
 
-            uniform mat4 viewProjectionMatrix;
-            uniform mat4 transform;
+            uniform mat4 u_viewProjectionMatrix;
+            uniform mat4 u_transform;
 
             out vec3 v_position;
 
             void main()
             {
                 v_position = a_position;
-                gl_Position = viewProjectionMatrix * transform * vec4(a_position, 1.0);
+                gl_Position = u_viewProjectionMatrix * u_transform * vec4(a_position, 1.0);
             }
         )";
 
-        std::string blueShaderFragmentSrc = R"(
+        std::string flatColorShaderFragmentSrc = R"(
             #version 330 core
 
             layout(location = 0) out vec4 color;
             
             in vec3 v_position;
 
+            uniform vec4 u_color;
+
             void main()
             {
-                color = vec4(0.2, 0.3, 0.8, 1.0);
+                color = u_color;
             }
         )";
 
@@ -130,7 +132,7 @@ public:
         m_squareVertexArray->AddVertexBuffer(squareVertexBuffer);
         m_squareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-        m_blueShader.reset(REngine::Shader::Create(blueShaderVertexSrc, blueShaderFragmentSrc));
+        m_flatColorShader.reset(REngine::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
     }
 
     void OnUpdate(REngine::TimeStep ts) override
@@ -159,14 +161,19 @@ public:
 
         static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+        glm::vec4 greenColor(0.3, 0.8f, 0.2f, 1.0f);
+        glm::vec4 blueColor(0.2, 0.3f, 0.8f, 1.0f);
+
         for (int x = 0; x < 20; x++)
         {
             for (int y = 0; y < 20; y++)
             {
                 glm::vec3 position(x * 0.11f, y * 0.11f, 0.0f);
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
+                x % 2 == 0 ?
+                    m_flatColorShader->UploadUniformFloat4("u_color", greenColor) : m_flatColorShader->UploadUniformFloat4("u_color", blueColor);
 
-                REngine::Renderer::Submit(m_blueShader, m_squareVertexArray, transform);
+                REngine::Renderer::Submit(m_flatColorShader, m_squareVertexArray, transform);
             }
         }
 
@@ -182,7 +189,7 @@ private:
     std::shared_ptr<REngine::Shader> m_shader;
     std::shared_ptr<REngine::VertexArray> m_vertexArray;
 
-    std::shared_ptr<REngine::Shader> m_blueShader;
+    std::shared_ptr<REngine::Shader> m_flatColorShader;
     std::shared_ptr<REngine::VertexArray> m_squareVertexArray;
 
     REngine::OrthographicCamera camera;
