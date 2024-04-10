@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #ifdef RE_PLATFORM_WINDOWS
 #if RE_DYNAMIC_LINK
@@ -32,3 +33,12 @@
 #define BIT(x) (1 << x)
 
 #define RE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace REngine
+{
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
+
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+}

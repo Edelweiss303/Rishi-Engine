@@ -112,10 +112,10 @@ public:
 
         m_vertexArray.reset(REngine::VertexArray::Create());
 
-        std::shared_ptr<REngine::VertexBuffer> vertexBuffer;
+        REngine::Ref<REngine::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(REngine::VertexBuffer::Create(vertices, sizeof(vertices)));
 
-        std::shared_ptr<REngine::IndexBuffer> indexBuffer;
+        REngine::Ref<REngine::IndexBuffer> indexBuffer;
         indexBuffer.reset(REngine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
         vertexBuffer->SetLayout(layout);
@@ -128,10 +128,10 @@ public:
 
         m_squareVertexArray.reset(REngine::VertexArray::Create());
 
-        std::shared_ptr<REngine::VertexBuffer> squareVertexBuffer;
+        REngine::Ref<REngine::VertexBuffer> squareVertexBuffer;
         squareVertexBuffer.reset(REngine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
-        std::shared_ptr<REngine::IndexBuffer> squareIndexBuffer;
+        REngine::Ref<REngine::IndexBuffer> squareIndexBuffer;
         squareIndexBuffer.reset(REngine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
         squareVertexBuffer->SetLayout(squareLayout);
@@ -200,14 +200,15 @@ public:
     }
 
 private:
-    std::shared_ptr<REngine::Shader> m_shader;
-    std::shared_ptr<REngine::VertexArray> m_vertexArray;
+    REngine::Ref<REngine::Shader> m_shader;
+    REngine::Ref<REngine::VertexArray> m_vertexArray;
 
-    std::shared_ptr<REngine::Shader> m_flatColorShader;
-    std::shared_ptr<REngine::VertexArray> m_squareVertexArray;
+    REngine::Ref<REngine::Shader> m_flatColorShader;
+    REngine::Ref<REngine::VertexArray> m_squareVertexArray;
 
     REngine::OrthographicCamera camera;
     glm::vec3 m_cameraPosition;
+
     float m_cameraRotation = 0;
     float m_cameraMoveSpeed = 5.0f;
     float m_cameraRotationSpeed = 20.0f;
