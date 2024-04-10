@@ -1,6 +1,8 @@
 #include "REpch.h"
 #include "Renderer.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace REngine
 {
     Renderer::SceneData* Renderer::s_sceneData = new Renderer::SceneData;
@@ -13,8 +15,8 @@ namespace REngine
     void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
     {
         shader->Bind();
-        shader->UploadUniformMat4("u_viewProjectionMatrix", s_sceneData->ViewProjectionMatrix);
-        shader->UploadUniformMat4("u_transform", transform);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_viewProjectionMatrix", s_sceneData->ViewProjectionMatrix);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_transform", transform);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

@@ -1,6 +1,13 @@
 #include <REngine.h>
+
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
+
 #include <glm/ext/matrix_transform.hpp>
+
+#include <glm/gtc/type_ptr.hpp>
+
 class ExampleLayer : public REngine::Layer
 {
 public:
@@ -84,11 +91,11 @@ public:
             
             in vec3 v_position;
 
-            uniform vec4 u_color;
+            uniform vec3 u_color;
 
             void main()
             {
-                color = u_color;
+                color = vec4(u_color, 1.0);
             }
         )";
 
@@ -164,21 +171,28 @@ public:
         glm::vec4 greenColor(0.3, 0.8f, 0.2f, 1.0f);
         glm::vec4 blueColor(0.2, 0.3f, 0.8f, 1.0f);
 
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_flatColorShader)->Bind();
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_flatColorShader)->UploadUniformFloat3("u_color", m_squareColor);
+
         for (int x = 0; x < 20; x++)
         {
             for (int y = 0; y < 20; y++)
             {
                 glm::vec3 position(x * 0.11f, y * 0.11f, 0.0f);
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * scale;
-                x % 2 == 0 ?
-                    m_flatColorShader->UploadUniformFloat4("u_color", greenColor) : m_flatColorShader->UploadUniformFloat4("u_color", blueColor);
-
                 REngine::Renderer::Submit(m_flatColorShader, m_squareVertexArray, transform);
             }
         }
 
         REngine::Renderer::Submit(m_shader, m_vertexArray);
         REngine::Renderer::EndScene();
+    }
+
+    virtual void OnImGuiRender() override
+    {
+        ImGui::Begin("Settings");
+        ImGui::ColorEdit3("Square Color", glm::value_ptr(m_squareColor));
+        ImGui::End();
     }
 
     void OnEvent(REngine::Event& event) override
@@ -197,6 +211,8 @@ private:
     float m_cameraRotation = 0;
     float m_cameraMoveSpeed = 5.0f;
     float m_cameraRotationSpeed = 20.0f;
+
+    glm::vec3 m_squareColor = { 0.2f, 0.8f, 0.3f };
 };
 
 class Sandbox : public REngine::Application
