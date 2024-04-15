@@ -17,6 +17,7 @@
 
 #include "REngine/Renderer/Buffer.h"
 #include "REngine/Renderer/Shader.h"
+#include "REngine/Renderer/Texture.h"
 #include "REngine/Renderer/VertexArray.h"
 
 #include "REngine/Renderer/OrthographicCamera.h"

@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "REngine/vendor/GLFW/include"
 IncludeDir["Glad"] = "REngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "REngine/vendor/imgui"
 IncludeDir["glm"] = "REngine/vendor/glm"
+IncludeDir["stb_image"] = "REngine/vendor/stb_image"
 
 
 group "Dependencies"
@@ -45,6 +46,8 @@ project "REngine"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/stb_image/**.h",
+        "%{prj.name}/vendor/stb_image/**.cpp",
         "%{prj.name}/vendor/glm/glm/**.hpp",
         "%{prj.name}/vendor/glm/glm/**.inl",
     }
@@ -61,7 +64,8 @@ project "REngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links 

@@ -23,12 +23,12 @@ public:
 
         uint32_t indices[3] = { 0, 1, 2 };
 
-        float squareVertices[3 * 4] =
+        float squareVertices[5 * 4] =
         {
-           -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.5f,  0.5f, 0.0f,
-           -0.5f,  0.5f, 0.0f
+           -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+           -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
         };
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
@@ -99,6 +99,39 @@ public:
             }
         )";
 
+        std::string textureShaderVertexSrc = R"(
+            #version 330 core
+
+            layout(location = 0) in vec3 a_position;
+            layout(location = 1) in vec2 a_texCoord;
+
+            uniform mat4 u_viewProjectionMatrix;
+            uniform mat4 u_transform;
+
+            out vec2 v_texCoord;
+
+            void main()
+            {
+                v_texCoord = a_texCoord;
+                gl_Position = u_viewProjectionMatrix * u_transform * vec4(a_position, 1.0);
+            }
+        )";
+
+        std::string textureShaderFragmentSrc = R"(
+            #version 330 core
+
+            layout(location = 0) out vec4 color;
+            
+            in vec2 v_texCoord;
+
+            uniform sampler2D u_texture;
+
+            void main()
+            {
+                color = texture(u_texture, v_texCoord);
+            }
+        )";
+
         REngine::BufferLayout layout =
         {
             { REngine::ShaderDataType::Float3, "a_position" },
@@ -107,7 +140,8 @@ public:
 
         REngine::BufferLayout squareLayout =
         {
-            { REngine::ShaderDataType::Float3, "a_position" }
+            { REngine::ShaderDataType::Float3, "a_position" },
+            { REngine::ShaderDataType::Float2, "a_texCoord" },
         };
 
         m_vertexArray.reset(REngine::VertexArray::Create());
@@ -140,6 +174,13 @@ public:
         m_squareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
         m_flatColorShader.reset(REngine::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+
+        m_textureShader.reset(REngine::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+        m_texture2D = REngine::Texture2D::Create("assets/textures/AAAAA.png");
+
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->Bind();
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->UploadUniformInt("u_texture", 0);
     }
 
     void OnUpdate(REngine::TimeStep ts) override
@@ -184,7 +225,11 @@ public:
             }
         }
 
-        REngine::Renderer::Submit(m_shader, m_vertexArray);
+        m_texture2D->Bind();
+        REngine::Renderer::Submit(m_textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        
+        // Rendering Triangle
+        //REngine::Renderer::Submit(m_shader, m_vertexArray);
         REngine::Renderer::EndScene();
     }
 
@@ -204,7 +249,10 @@ private:
     REngine::Ref<REngine::VertexArray> m_vertexArray;
 
     REngine::Ref<REngine::Shader> m_flatColorShader;
+    REngine::Ref<REngine::Shader> m_textureShader;
     REngine::Ref<REngine::VertexArray> m_squareVertexArray;
+
+    REngine::Ref<REngine::Texture2D> m_texture2D;
 
     REngine::OrthographicCamera camera;
     glm::vec3 m_cameraPosition;
