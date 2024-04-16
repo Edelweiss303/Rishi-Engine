@@ -178,6 +178,7 @@ public:
         m_textureShader.reset(REngine::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
         m_texture2D = REngine::Texture2D::Create("assets/textures/AAAAA.png");
+        m_RELogoTexture2D = REngine::Texture2D::Create("assets/textures/REngineLogo.png");
 
         std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->Bind();
         std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->UploadUniformInt("u_texture", 0);
@@ -227,6 +228,8 @@ public:
 
         m_texture2D->Bind();
         REngine::Renderer::Submit(m_textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        m_RELogoTexture2D->Bind();
+        REngine::Renderer::Submit(m_textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         
         // Rendering Triangle
         //REngine::Renderer::Submit(m_shader, m_vertexArray);
@@ -253,6 +256,7 @@ private:
     REngine::Ref<REngine::VertexArray> m_squareVertexArray;
 
     REngine::Ref<REngine::Texture2D> m_texture2D;
+    REngine::Ref<REngine::Texture2D> m_RELogoTexture2D;
 
     REngine::OrthographicCamera camera;
     glm::vec3 m_cameraPosition;

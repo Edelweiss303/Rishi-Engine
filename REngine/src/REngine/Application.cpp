@@ -17,13 +17,15 @@ namespace REngine
     {
         RE_CORE_ASSERT(!s_instance, "Application already exists!")
         s_instance = this;
+
         m_window = std::unique_ptr<Window>(Window::Create());
         m_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+        Renderer::Init();
+
         m_window->SetVSync(false);
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
-        
-        
     }
 
     Application::~Application()
