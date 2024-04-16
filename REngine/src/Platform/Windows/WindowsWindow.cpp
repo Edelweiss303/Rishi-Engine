@@ -36,7 +36,7 @@ namespace REngine
         m_data.Width = props.Width;
         m_data.Height = props.Height;
 
-        RE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+        RE_CORE_INFO("Creating {0} window ({1}x{2})", props.Title, props.Width, props.Height);
 
         if (!s_GLFWInitialized)
         {
