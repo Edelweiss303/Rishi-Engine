@@ -23,7 +23,6 @@ namespace REngine
 
         Renderer::Init();
 
-        m_window->SetVSync(false);
         m_imGuiLayer = new ImGuiLayer();
         PushOverlay(m_imGuiLayer);
     }

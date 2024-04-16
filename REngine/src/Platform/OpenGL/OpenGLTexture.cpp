@@ -27,7 +27,7 @@ namespace REngine
 
         if (channels == 4)
         {
-            internalFormat = GL_RGB8;
+            internalFormat = GL_RGBA8;
             dataFormat = GL_RGBA;
         }
         else if (channels == 3)
