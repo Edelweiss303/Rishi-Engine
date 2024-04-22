@@ -10,6 +10,7 @@
 #include "REngine/Log.h"
 #include "REngine/MouseButtonCodes.h"
 #include "REngine/Core/Timestep.h"
+#include "REngine/OrthographicCameraController.h"
 
 // ------------ RENDERER -----------
 #include "REngine/Renderer/Renderer.h"

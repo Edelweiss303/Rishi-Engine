@@ -12,7 +12,7 @@ class ExampleLayer : public REngine::Layer
 {
 public:
     ExampleLayer()
-        :Layer("Example"), camera(-1.6f, 1.6f, -.9f, 0.9f), m_cameraPosition(0.0f)
+        : Layer("Example"), m_cameraController(1280.0f / 720.0f, true)
     {
         float vertices[3 * 7] =
         {
@@ -153,27 +153,14 @@ public:
 
     void OnUpdate(REngine::TimeStep ts) override
     {
-        if (REngine::Input::IsKeyPressed(RE_KEY_A))
-            m_cameraPosition.x -= m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_D))
-            m_cameraPosition.x += m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_W))
-            m_cameraPosition.y += m_cameraMoveSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_S))
-            m_cameraPosition.y -= m_cameraMoveSpeed * ts;
+        // Update
+        m_cameraController.OnUpdate(ts);
 
-        if (REngine::Input::IsKeyPressed(RE_KEY_Q))
-            m_cameraRotation += m_cameraRotationSpeed * ts;
-        if (REngine::Input::IsKeyPressed(RE_KEY_E))
-            m_cameraRotation -= m_cameraRotationSpeed * ts;
-
+        // Render
         REngine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
         REngine::RenderCommand::Clear();
 
-        camera.SetPosition(m_cameraPosition);
-        camera.SetRotation(m_cameraRotation);
-
-        REngine::Renderer::BeginScene(camera);
+        REngine::Renderer::BeginScene(m_cameraController.GetCamera());
 
         static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -212,8 +199,9 @@ public:
         ImGui::End();
     }
 
-    void OnEvent(REngine::Event& event) override
+    void OnEvent(REngine::Event& e) override
     {
+        m_cameraController.OnEvent(e);
     }
 
 private:
@@ -229,12 +217,7 @@ private:
     REngine::Ref<REngine::Texture2D> m_texture2D;
     REngine::Ref<REngine::Texture2D> m_logoTexture2D;
 
-    REngine::OrthographicCamera camera;
-    glm::vec3 m_cameraPosition;
-
-    float m_cameraRotation = 0;
-    float m_cameraMoveSpeed = 5.0f;
-    float m_cameraRotationSpeed = 20.0f;
+    REngine::OrthographicCameraController m_cameraController;
 
     glm::vec3 m_squareColor = { 0.2f, 0.8f, 0.3f };
 };

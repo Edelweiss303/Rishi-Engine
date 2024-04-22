@@ -11,6 +11,12 @@ namespace REngine
         m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
     }
 
+    void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)
+    {
+        m_projectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+        m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
+    }
+
     void OrthographicCamera::SetPosition(const glm::vec3& pos)
     {
         m_position = pos;
@@ -22,7 +28,7 @@ namespace REngine
         m_rotation = rot;
         RecalculateViewMatrix();
     }
-
+    
     void OrthographicCamera::RecalculateViewMatrix()
     {
         m_viewMatrix = glm::inverse(
