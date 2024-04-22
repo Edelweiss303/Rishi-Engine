@@ -7,7 +7,7 @@
 
 namespace REngine
 {
-    Shader* Shader::Create(const std::string& filepath)
+    Ref<Shader> Shader::Create(const std::string& filepath)
     {
         switch (Renderer::GetAPI())
         {
@@ -16,7 +16,7 @@ namespace REngine
             return nullptr;
             break;
         case RendererAPI::API::OpenGL:
-            return new OpenGLShader(filepath);
+            return std::make_shared<OpenGLShader>(filepath);
             break;
         default:
             RE_CORE_ASSERT(false, "Unknown RendererAPI");
@@ -25,7 +25,7 @@ namespace REngine
         }
     }
 
-    Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+    Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
     {
         switch (Renderer::GetAPI())
         {
@@ -34,12 +34,49 @@ namespace REngine
             return nullptr;
             break;
         case RendererAPI::API::OpenGL:
-            return new OpenGLShader(vertexSrc, fragmentSrc);
+            return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
             break;
         default:
             RE_CORE_ASSERT(false, "Unknown RendererAPI");
             return nullptr;
             break;
         }
+    }
+
+    void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
+    {
+        RE_CORE_ASSERT(!Exists(name), "Shader already exists!");
+        m_shaders[name] = shader;
+    }
+
+    void ShaderLibrary::Add(const Ref<Shader>& shader)
+    {
+        const std::string& name = shader->GetName();
+        Add(name, shader);
+    }
+
+    Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
+    {
+        auto shader = Shader::Create(filepath);
+        Add(name, shader);
+        return shader;
+    }
+
+    Ref<Shader> ShaderLibrary::Load(const std::string& filepath)
+    {
+        auto shader = Shader::Create(filepath);
+        Add(shader);
+        return shader;
+    }
+
+    Ref<Shader> ShaderLibrary::Get(const std::string& name)
+    {
+        RE_CORE_ASSERT(Exists(name), "Shader not found!");
+        return m_shaders[name];
+    }
+
+    bool ShaderLibrary::Exists(const std::string& name) const
+    {
+        return m_shaders.find(name) != m_shaders.end();
     }
 }

@@ -124,7 +124,7 @@ public:
         m_vertexArray->AddVertexBuffer(vertexBuffer);
         m_vertexArray->SetIndexBuffer(indexBuffer);
 
-        m_shader.reset(REngine::Shader::Create(vertexSrc, fragmentSrc));
+        m_shader = REngine::Shader::Create("TriangleShader", vertexSrc, fragmentSrc);
 
 
         m_squareVertexArray.reset(REngine::VertexArray::Create());
@@ -140,15 +140,15 @@ public:
         m_squareVertexArray->AddVertexBuffer(squareVertexBuffer);
         m_squareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-        m_flatColorShader.reset(REngine::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+        m_flatColorShader = REngine::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
-        m_textureShader.reset(REngine::Shader::Create("Assets/Shaders/Texture.glsl"));
+        auto textureShader = m_shaderLibrary.Load("Assets/Shaders/Texture.glsl");
 
         m_texture2D = REngine::Texture2D::Create("Assets/Textures/AAAAA.png");
         m_logoTexture2D = REngine::Texture2D::Create("Assets/Textures/REngineLogo.png");
 
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->Bind();
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_textureShader)->UploadUniformInt("u_texture", 0);
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(textureShader)->Bind();
+        std::dynamic_pointer_cast<REngine::OpenGLShader>(textureShader)->UploadUniformInt("u_texture", 0);
     }
 
     void OnUpdate(REngine::TimeStep ts) override
@@ -193,10 +193,12 @@ public:
             }
         }
 
+        auto textureShader = m_shaderLibrary.Get("Texture");
+
         m_texture2D->Bind();
-        REngine::Renderer::Submit(m_textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        REngine::Renderer::Submit(textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         m_logoTexture2D->Bind();
-        REngine::Renderer::Submit(m_textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+        REngine::Renderer::Submit(textureShader, m_squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
         
         // Rendering Triangle
         //REngine::Renderer::Submit(m_shader, m_vertexArray);
@@ -215,11 +217,13 @@ public:
     }
 
 private:
+
+    REngine::ShaderLibrary m_shaderLibrary;
+
     REngine::Ref<REngine::Shader> m_shader;
     REngine::Ref<REngine::VertexArray> m_vertexArray;
 
     REngine::Ref<REngine::Shader> m_flatColorShader;
-    REngine::Ref<REngine::Shader> m_textureShader;
     REngine::Ref<REngine::VertexArray> m_squareVertexArray;
 
     REngine::Ref<REngine::Texture2D> m_texture2D;
