@@ -96,7 +96,7 @@ namespace REngine
     {
         std::string result;
 
-        std::ifstream in(filepath, std::ios::in, std::ios::binary);
+        std::ifstream in(filepath, std::ios::in | std::ios::binary);
         if (in)
         {
             in.seekg(0, std::ios::end);
@@ -145,7 +145,10 @@ namespace REngine
         // Get program object
         GLuint program = glCreateProgram();
 
-        std::vector<GLenum> glShaderIDs(shaderSources.size());
+        RE_CORE_ASSERT(shaderSources.size() <= 2, "Only 2 shaders supported for now.");
+
+        std::array<GLenum, 2> glShaderIDs;
+        int glShaderIDIndex = 0;
 
         for (auto& pair : shaderSources)
         {
@@ -186,7 +189,7 @@ namespace REngine
             glAttachShader(program, shader);
 
             // Keep track of shader IDs
-            glShaderIDs.push_back(shader);
+            glShaderIDs[glShaderIDIndex++] = shader;
         }
 
         // Vertex and fragment shaders are successfully compiled.
