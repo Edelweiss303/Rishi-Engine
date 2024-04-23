@@ -40,8 +40,12 @@ namespace REngine
             TimeStep timeStep = time - m_lastFrameTime;
             m_lastFrameTime = time;
 
-            for (Layer* layer : m_layerStack)
-                layer->OnUpdate(timeStep);
+            if (!m_minimized)
+            {
+                for (Layer* layer : m_layerStack)
+                    layer->OnUpdate(timeStep);
+             
+            }
 
             m_imGuiLayer->Begin(); 
 
@@ -56,6 +60,7 @@ namespace REngine
     {
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
         for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
         {
@@ -81,5 +86,18 @@ namespace REngine
     {
         m_running = false;
         return true;
+    }
+    bool Application::OnWindowResize(WindowResizeEvent& e)
+    {
+        if (e.GetWidth() == 0 || e.GetHeight() == 0)
+        {
+            m_minimized = true;
+            return false;
+        }
+
+        m_minimized = false;
+        Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+        return false;
     }
 }

@@ -38,11 +38,11 @@ namespace REngine
     void OrthographicCameraController::OnEvent(Event& e)
     {
         EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<MouseScrolledEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
-        dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
+        dispatcher.Dispatch<MouseScrolledEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScroll));
+        dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
     }
 
-    bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
+    bool OrthographicCameraController::OnMouseScroll(MouseScrolledEvent& e)
     {
         m_zoomLevel -= e.GetYOffset() * 0.5f;
         m_zoomLevel = std::max(m_zoomLevel, 0.1f);
@@ -50,7 +50,7 @@ namespace REngine
         return false;
     }
 
-    bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
+    bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
     {
         m_aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
         m_camera.SetProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);

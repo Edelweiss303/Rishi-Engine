@@ -19,9 +19,12 @@ namespace REngine
         inline OrthographicCamera& GetCamera() { return m_camera; }
         inline const OrthographicCamera& GetCamera() const { return m_camera; }
 
+        inline void SetZoomLevel(float level) { m_zoomLevel = level; }
+        inline float GetZoomLevel() { return m_zoomLevel; }
+
     private:
-        bool OnMouseScrolled(MouseScrolledEvent& e);
-        bool OnWindowResized(WindowResizeEvent& e);
+        bool OnMouseScroll(MouseScrolledEvent& e);
+        bool OnWindowResize(WindowResizeEvent& e);
 
     private:
         float m_aspectRatio;
