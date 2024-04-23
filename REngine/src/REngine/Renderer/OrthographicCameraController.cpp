@@ -1,7 +1,7 @@
 #include "REpch.h"
 #include "OrthographicCameraController.h"
-#include "Input.h"
-#include "Keycodes.h"
+#include "REngine/Core/Input.h"
+#include "REngine/Core/Keycodes.h"
 
 namespace REngine
 {

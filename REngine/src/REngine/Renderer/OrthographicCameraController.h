@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Renderer/OrthographicCamera.h"
-#include "Core/TimeStep.h"
+#include "REngine/Renderer/OrthographicCamera.h"
+#include "REngine/Core/TimeStep.h"
 
-#include "Events/ApplicationEvent.h"
-#include "Events/MouseEvent.h"
+#include "REngine/Events/ApplicationEvent.h"
+#include "REngine/Events/MouseEvent.h"
 
 namespace REngine
 {

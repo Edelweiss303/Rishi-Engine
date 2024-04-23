@@ -2,15 +2,15 @@
 
 //For use by REngine applications;
 
-#include "REngine/Application.h"
-#include "REngine/Input.h"
-#include "REngine/ImGui/ImGuiLayer.h"
-#include "REngine/KeyCodes.h"
-#include "REngine/Layer.h"
-#include "REngine/Log.h"
-#include "REngine/MouseButtonCodes.h"
+#include "REngine/Core/Application.h"
+#include "REngine/Core/Input.h"
+#include "REngine/Core/KeyCodes.h"
+#include "REngine/Core/Layer.h"
+#include "REngine/Core/Log.h"
+#include "REngine/Core/MouseButtonCodes.h"
 #include "REngine/Core/Timestep.h"
-#include "REngine/OrthographicCameraController.h"
+#include "REngine/ImGui/ImGuiLayer.h"
+#include "REngine/Renderer/OrthographicCameraController.h"
 
 // ------------ RENDERER -----------
 #include "REngine/Renderer/Renderer.h"
@@ -25,5 +25,5 @@
 // ---------------------------------
 
 // ---------- ENTRY POINT ----------
-#include "REngine/EntryPoint.h"
+#include "REngine/Core/EntryPoint.h"
 // ---------------------------------

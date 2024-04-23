@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "REngine/Log.h"
+#include "REngine/Core/Log.h"
 
 #ifdef RE_PLATFORM_WINDOWS
     #include <Windows.h>

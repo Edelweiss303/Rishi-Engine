@@ -2,7 +2,7 @@
 #include "WindowsInput.h"
 
 #include <GLFW/glfw3.h>
-#include "REngine/Application.h"
+#include "REngine/Core/Application.h"
 
 namespace REngine
 {

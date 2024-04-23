@@ -2,7 +2,7 @@
 
 #include "REpch.h"
 
-#include "REngine/Core.h"
+#include "REngine/Core/Core.h"
 #include "REngine/Events/Event.h"
 
 namespace REngine

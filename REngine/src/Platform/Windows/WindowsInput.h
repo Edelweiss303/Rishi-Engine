@@ -1,6 +1,6 @@
 #pragma once
 
-#include "REngine/Input.h"
+#include "REngine/Core/Input.h"
 
 namespace REngine
 {
