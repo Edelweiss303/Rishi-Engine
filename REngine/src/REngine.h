@@ -23,7 +23,3 @@
 
 #include "REngine/Renderer/OrthographicCamera.h"
 // ---------------------------------
-
-// ---------- ENTRY POINT ----------
-#include "REngine/Core/EntryPoint.h"
-// ---------------------------------

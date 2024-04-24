@@ -1,12 +1,15 @@
 #include <REngine.h>
+#include <REngine/Core/EntryPoint.h>
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <Platform/OpenGL/OpenGLShader.h>
 
-#include "imgui/imgui.h"
+#include <imgui/imgui.h>
 
 #include <glm/ext/matrix_transform.hpp>
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Sandbox2D.h"
 
 class ExampleLayer : public REngine::Layer
 {
@@ -111,7 +114,7 @@ public:
             { REngine::ShaderDataType::Float2, "a_texCoord" },
         };
 
-        m_vertexArray.reset(REngine::VertexArray::Create());
+        m_vertexArray = REngine::VertexArray::Create();
 
         REngine::Ref<REngine::VertexBuffer> vertexBuffer;
         vertexBuffer.reset(REngine::VertexBuffer::Create(vertices, sizeof(vertices)));
@@ -127,7 +130,7 @@ public:
         m_shader = REngine::Shader::Create("TriangleShader", vertexSrc, fragmentSrc);
 
 
-        m_squareVertexArray.reset(REngine::VertexArray::Create());
+        m_squareVertexArray = REngine::VertexArray::Create();
 
         REngine::Ref<REngine::VertexBuffer> squareVertexBuffer;
         squareVertexBuffer.reset(REngine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
@@ -227,7 +230,8 @@ class Sandbox : public REngine::Application
 public:
     Sandbox()
     {
-        PushLayer(new ExampleLayer());
+        // PushLayer(new ExampleLayer());
+        PushLayer(new Sandbox2D());
     }
 
     ~Sandbox()
