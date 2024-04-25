@@ -241,6 +241,7 @@ namespace REngine
         for (GLenum id : glShaderIDs)
         {
             glDetachShader(program, id);
+            glDeleteShader(id);
         }
 
         m_rendererID = program;
