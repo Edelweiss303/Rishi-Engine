@@ -17,6 +17,6 @@ namespace REngine
         virtual std::pair<float, float> GetMousePositionImpl() = 0;
 
     private:
-        static Input* s_instance;
+        static Scope<Input> s_instance;
     };
 }

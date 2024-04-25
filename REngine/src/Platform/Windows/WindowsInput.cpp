@@ -6,7 +6,7 @@
 
 namespace REngine
 {
-    Input* Input::s_instance = new WindowsInput();
+    Scope<Input> Input::s_instance = CreateScope<WindowsInput>();
 
     bool REngine::WindowsInput::IsKeyPressedImpl(int keycode)
     {

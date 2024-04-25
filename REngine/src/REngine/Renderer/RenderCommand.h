@@ -33,6 +33,6 @@ namespace REngine
         }
 
     private:
-        static RendererAPI* s_rendererAPI;
+        static Scope<RendererAPI> s_rendererAPI;
     };
 }
