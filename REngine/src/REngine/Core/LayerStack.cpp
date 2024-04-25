@@ -10,7 +10,10 @@ namespace REngine
     REngine::LayerStack::~LayerStack()
     {
         for (Layer* layer : m_layers)
+        {
+            layer->OnDetach();
             delete layer;
+        }
     }
 
     void REngine::LayerStack::PushLayer(Layer* layer)
