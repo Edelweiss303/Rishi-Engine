@@ -12,13 +12,25 @@ namespace REngine
     void OrthographicCameraController::OnUpdate(TimeStep ts)
     {
         if (Input::IsKeyPressed(RE_KEY_A))
-            m_cameraPosition.x -= m_cameraTranslationSpeed * ts;
+        {
+            m_cameraPosition.x -= cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+            m_cameraPosition.y -= sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+        }
         if (Input::IsKeyPressed(RE_KEY_D))
-            m_cameraPosition.x += m_cameraTranslationSpeed * ts;
+        {
+            m_cameraPosition.x += cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+            m_cameraPosition.y += sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+        }
         if (Input::IsKeyPressed(RE_KEY_W))
-            m_cameraPosition.y += m_cameraTranslationSpeed * ts;
+        {
+            m_cameraPosition.x += -sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+            m_cameraPosition.y += cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+        }
         if (Input::IsKeyPressed(RE_KEY_S))
-            m_cameraPosition.y -= m_cameraTranslationSpeed * ts;
+        {
+            m_cameraPosition.x -= -sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+			m_cameraPosition.y -= cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+        }
 
         if (m_rotation)
         {
@@ -27,6 +39,11 @@ namespace REngine
             if (Input::IsKeyPressed(RE_KEY_E))
                 m_cameraRotation -= m_cameraRotationSpeed * ts;
         
+            if (m_cameraRotation > 180.0f)
+                m_cameraRotation -= 360.0f;
+            else if (m_cameraRotation <= -180.0f)
+                m_cameraRotation += 360.0f;
+
             m_camera.SetRotation(m_cameraRotation);
         }
 
