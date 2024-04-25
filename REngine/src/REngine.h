@@ -14,6 +14,7 @@
 
 // ------------ RENDERER -----------
 #include "REngine/Renderer/Renderer.h"
+#include "REngine/Renderer/Renderer2D.h"
 #include "REngine/Renderer/RenderCommand.h"
 
 #include "REngine/Renderer/Buffer.h"
