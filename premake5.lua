@@ -82,7 +82,6 @@ project "REngine"
 
         defines
         {
-            "RE_PLATFORM_WINDOWS",
             "RE_BUILD_DLL",
             "GLFW_INCLUDE_NONE"
         }
@@ -139,11 +138,6 @@ project "Sandbox"
     filter "system:windows"
         staticruntime "On"
         systemversion "latest"
-
-        defines
-        {
-            "RE_PLATFORM_WINDOWS",
-        }
 
     filter "configurations:Debug"
         defines "RE_DEBUG"
