@@ -1,12 +1,16 @@
 [submodule "REngine/vendor/spdlog"]
 	path = REngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "REngine/vendor/GLFW"]
 	path = REngine/vendor/GLFW
 	url = https://github.com/Edelweiss303/glfw.git
+	branch = 3.3-stable
 [submodule "REngine/vendor/imgui"]
 	path = REngine/vendor/imgui
 	url = https://github.com/Edelweiss303/imgui.git
+	branch = docking
 [submodule "REngine/vendor/glm"]
 	path = REngine/vendor/glm
 	url = https://github.com/Edelweiss303/glm.git
+	branch = master
