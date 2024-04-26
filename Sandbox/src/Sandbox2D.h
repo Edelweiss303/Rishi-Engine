@@ -19,6 +19,7 @@ private:
     
     REngine::Ref<REngine::VertexArray> m_squareVertexArray;
     REngine::Ref<REngine::Shader> m_flatColorShader;
+    REngine::Ref<REngine::Texture2D> m_texture2D;
 
     glm::vec4 m_squareColor = { 0.2f, 0.8f, 0.3f, 1.0f };
 

@@ -12,6 +12,7 @@ namespace REngine
     {
         Ref<VertexArray> QuadVertexArray;
         Ref<Shader> FlatColorShader;
+        Ref<Shader> TextureShader;
     };
 
     static Renderer2DStorage* s_data;
@@ -20,12 +21,12 @@ namespace REngine
     {
         s_data = new Renderer2DStorage();
 
-        float squareVertices[5 * 3] =
+        float squareVertices[5 * 4] =
         {
-           -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.5f,  0.5f, 0.0f,
-           -0.5f,  0.5f, 0.0f
+           -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 
+           -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
         };
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
@@ -39,13 +40,18 @@ namespace REngine
         squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
         squareVertexBuffer->SetLayout({
-            { ShaderDataType::Float3, "a_position" }
+            { ShaderDataType::Float3, "a_position" },
+            { ShaderDataType::Float2, "a_texCoord" }
             });
 
         s_data->QuadVertexArray->AddVertexBuffer(squareVertexBuffer);
         s_data->QuadVertexArray->SetIndexBuffer(squareIndexBuffer);
 
         s_data->FlatColorShader = Shader::Create("Assets/Shaders/FlatColor.glsl");
+        s_data->TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
+
+        s_data->TextureShader->Bind();
+        s_data->TextureShader->SetInt("u_texture", 0);
     }
 
     void Renderer2D::Shutdown()
@@ -57,10 +63,18 @@ namespace REngine
     {
         s_data->FlatColorShader->Bind();
         s_data->FlatColorShader->SetMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
+
+        s_data->TextureShader->Bind();
+        s_data->TextureShader->SetMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
     {
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec4& color)
+    {
+        DrawQuad({ 0.0f, 0.0f, 0.0f }, 0.0f, { 0.0f, 0.0f }, color);
     }
 
     void Renderer2D::DrawQuad(const glm::vec2& position, float rotationDeg, const glm::vec2& size, const glm::vec4& color)
@@ -79,6 +93,33 @@ namespace REngine
             glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
         s_data->FlatColorShader->SetMat4("u_transform", transform);
+
+        s_data->QuadVertexArray->Bind();
+        RenderCommand::DrawIndexed(s_data->QuadVertexArray);
+    }
+
+    void Renderer2D::DrawQuad(const Ref<Texture2D>& texture)
+    {
+        DrawQuad({ 0.0f, 0.0f, 0.0f }, 0.0f, { 1.0f, 1.0f }, texture);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec2& position, float rotationDeg, const glm::vec2& size, const Ref<Texture2D>& texture)
+    {
+        DrawQuad({ position.x, position.y, 0.0f }, rotationDeg, size, texture);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec3& position, float rotationDeg, const glm::vec2& size, const Ref<Texture2D>& texture)
+    {
+        s_data->TextureShader->Bind();
+
+        glm::mat4 transform =
+            glm::translate(glm::mat4(1.0f), position) *
+            glm::rotate(glm::mat4(1.0f), glm::radians(rotationDeg), glm::vec3(0.0f, 0.0f, 1.0f)) *
+            glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+        s_data->TextureShader->SetMat4("u_transform", transform);
+
+        texture->Bind();
 
         s_data->QuadVertexArray->Bind();
         RenderCommand::DrawIndexed(s_data->QuadVertexArray);
