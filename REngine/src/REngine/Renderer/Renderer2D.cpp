@@ -11,8 +11,8 @@ namespace REngine
     struct Renderer2DStorage
     {
         Ref<VertexArray> QuadVertexArray;
-        Ref<Shader> FlatColorShader;
         Ref<Shader> TextureShader;
+        Ref<Texture2D> WhiteTexture;
     };
 
     static Renderer2DStorage* s_data;
@@ -46,10 +46,12 @@ namespace REngine
 
         s_data->QuadVertexArray->AddVertexBuffer(squareVertexBuffer);
         s_data->QuadVertexArray->SetIndexBuffer(squareIndexBuffer);
+        
+        uint32_t whiteTextureData = 0xffffffff;
+        s_data->WhiteTexture = Texture2D::Create(1, 1);
+        s_data->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-        s_data->FlatColorShader = Shader::Create("Assets/Shaders/FlatColor.glsl");
         s_data->TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
-
         s_data->TextureShader->Bind();
         s_data->TextureShader->SetInt("u_texture", 0);
     }
@@ -61,9 +63,6 @@ namespace REngine
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
-        s_data->FlatColorShader->Bind();
-        s_data->FlatColorShader->SetMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
-
         s_data->TextureShader->Bind();
         s_data->TextureShader->SetMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
     }
@@ -84,15 +83,15 @@ namespace REngine
 
     void Renderer2D::DrawQuad(const glm::vec3& position, float rotationDeg, const glm::vec2& size, const glm::vec4& color)
     {
-        s_data->FlatColorShader->Bind();
-        s_data->FlatColorShader->SetFloat4("u_color", color);
+        s_data->TextureShader->SetFloat4("u_color", color);
+        s_data->WhiteTexture->Bind();
 
         glm::mat4 transform = 
             glm::translate(glm::mat4(1.0f), position) * 
             glm::rotate(glm::mat4(1.0f), glm::radians(rotationDeg), glm::vec3(0.0f, 0.0f, 1.0f)) *
             glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
-        s_data->FlatColorShader->SetMat4("u_transform", transform);
+        s_data->TextureShader->SetMat4("u_transform", transform);
 
         s_data->QuadVertexArray->Bind();
         RenderCommand::DrawIndexed(s_data->QuadVertexArray);
@@ -110,7 +109,8 @@ namespace REngine
 
     void Renderer2D::DrawQuad(const glm::vec3& position, float rotationDeg, const glm::vec2& size, const Ref<Texture2D>& texture)
     {
-        s_data->TextureShader->Bind();
+        s_data->TextureShader->SetFloat4("u_color", glm::vec4(1.0f));
+        texture->Bind();
 
         glm::mat4 transform =
             glm::translate(glm::mat4(1.0f), position) *
@@ -119,7 +119,6 @@ namespace REngine
 
         s_data->TextureShader->SetMat4("u_transform", transform);
 
-        texture->Bind();
 
         s_data->QuadVertexArray->Bind();
         RenderCommand::DrawIndexed(s_data->QuadVertexArray);

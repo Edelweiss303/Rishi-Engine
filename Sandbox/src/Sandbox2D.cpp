@@ -30,7 +30,7 @@ void Sandbox2D::OnUpdate(REngine::TimeStep ts)
 
     REngine::Renderer2D::DrawQuad({0.0f, 1.0f}, 5.0f, {1.0f, 1.5f}, {0.3, 0.4f, 1.0f, 1.0f });
 
-    REngine::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, 0.0f, {2.0f, 2.0f}, m_texture2D);
+    REngine::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, 0.0f, {5.0f, 5.0f}, m_texture2D);
 
     REngine::Renderer2D::EndScene();
 }
