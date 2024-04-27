@@ -8,7 +8,7 @@
 
 namespace REngine
 {
-    static bool s_GLFWInitialized = false;
+    static uint8_t s_GLFWWindowCount = 0;
 
     static void GLFWErrorCallback(int error, const char* description)
     {
@@ -38,16 +38,17 @@ namespace REngine
 
         RE_CORE_INFO("Creating {0} window ({1}x{2})", props.Title, props.Width, props.Height);
 
-        if (!s_GLFWInitialized)
+        if (s_GLFWWindowCount == 0)
         {
-            // TODO: glfwTerminate on system shutdown
+            RE_CORE_INFO("Initializing GLFW");
             int success = glfwInit();
+            
             RE_CORE_ASSERT(success, "Could not initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
-            s_GLFWInitialized = true;
         }
 
         m_window = glfwCreateWindow((int)props.Width, (int)props.Height, m_data.Title.c_str(), nullptr, nullptr);
+        s_GLFWWindowCount++;
 
         m_context = CreateScope<OpenGLContext>(m_window);
         m_context->Init();
@@ -155,7 +156,18 @@ namespace REngine
 
     void WindowsWindow::Shutdown()
     {
-        glfwDestroyWindow(m_window);
+        if (m_window != nullptr)
+        {
+            glfwDestroyWindow(m_window);
+        }
+
+        s_GLFWWindowCount--;
+
+        if (s_GLFWWindowCount == 0)
+        {
+            RE_CORE_INFO("Terminating GLFW");
+            glfwTerminate();
+        }
     }
 
     void WindowsWindow::OnUpdate()
