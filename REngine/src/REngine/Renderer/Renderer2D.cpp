@@ -33,11 +33,9 @@ namespace REngine
 
         s_data->QuadVertexArray = VertexArray::Create();
 
-        Ref<VertexBuffer> squareVertexBuffer;
-        squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        Ref<VertexBuffer> squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
-        Ref<IndexBuffer> squareIndexBuffer;
-        squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        Ref<IndexBuffer> squareIndexBuffer = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
         squareVertexBuffer->SetLayout({
             { ShaderDataType::Float3, "a_position" },

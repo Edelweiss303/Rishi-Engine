@@ -44,21 +44,6 @@
 #endif // End of platform detection
 
 
-// DLL support
-#ifdef RE_PLATFORM_WINDOWS
-    #if RE_DYNAMIC_LINK
-        #ifdef RE_BUILD_DLL
-            #define RE_API __declspec(dllexport)
-        #else
-            #define RE_API __declspec(dllimport)
-        #endif
-    #else
-        #define RE_API
-    #endif
-#else
-    #error R-Engine only supports Windows!
-#endif // End of DLL suppor
-
 #ifdef RE_DEBUG
     #define RE_ENABLE_ASSERTS
 #endif 

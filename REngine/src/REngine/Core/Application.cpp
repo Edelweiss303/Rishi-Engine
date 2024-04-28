@@ -9,8 +9,6 @@
 
 namespace REngine
 {
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
     Application* Application::s_instance = nullptr;
 
     Application::Application()
@@ -18,8 +16,8 @@ namespace REngine
         RE_CORE_ASSERT(!s_instance, "Application already exists!")
         s_instance = this;
 
-        m_window = std::unique_ptr<Window>(Window::Create());
-        m_window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_window = Window::Create();
+        m_window->SetEventCallback(RE_BIND_EVENT_FN(Application::OnEvent));
 
         Renderer::Init();
 
@@ -29,6 +27,7 @@ namespace REngine
 
     Application::~Application()
     {
+        Renderer::Shutdown();
     }
 
     void Application::Run()
@@ -59,8 +58,8 @@ namespace REngine
     void Application::OnEvent(Event& e)
     {
         EventDispatcher dispatcher(e);
-        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-        dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+        dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(Application::OnWindowResize));
 
         for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
         {

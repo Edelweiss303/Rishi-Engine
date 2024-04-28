@@ -3,10 +3,6 @@
 
 namespace REngine
 {
-    REngine::LayerStack::LayerStack()
-    {
-    }
-
     REngine::LayerStack::~LayerStack()
     {
         for (Layer* layer : m_layers)

@@ -4,7 +4,7 @@
 
 namespace REngine
 {
-    class RE_API MouseMovedEvent : public Event
+    class MouseMovedEvent : public Event
     {
     public:
         MouseMovedEvent(float x, float y)
@@ -31,7 +31,7 @@ namespace REngine
         float m_mouseY;
     };
 
-    class RE_API MouseScrolledEvent : public Event
+    class MouseScrolledEvent : public Event
     {
     public:
         MouseScrolledEvent(float xOffset, float yOffset)
@@ -57,7 +57,7 @@ namespace REngine
         float m_yOffset;
     };
 
-    class RE_API MouseButtonEvent : public Event
+    class MouseButtonEvent : public Event
     {
     public:
         inline int GetMouseButton() const { return m_button; }
@@ -71,7 +71,7 @@ namespace REngine
 
     };
 
-    class RE_API MouseButtonPressedEvent : public MouseButtonEvent
+    class MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonPressedEvent(int button)
@@ -89,7 +89,7 @@ namespace REngine
         EVENT_CLASS_TYPE(MouseButtonPressed)
     };
 
-    class RE_API MouseButtonReleasedEvent : public MouseButtonEvent
+    class MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonReleasedEvent(int button)

@@ -1,4 +1,5 @@
 #pragma once
+#include "REngine/Core/Core.h"
 
 #ifdef RE_PLATFORM_WINDOWS
 

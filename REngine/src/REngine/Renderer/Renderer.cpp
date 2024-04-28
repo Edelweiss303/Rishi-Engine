@@ -14,6 +14,11 @@ namespace REngine
         Renderer2D::Init();
     }
 
+    void Renderer::Shutdown()
+    {
+        Renderer2D::Shutdown();
+    }
+
     void Renderer::OnWindowResize(uint32_t width, uint32_t height)
     {
         RenderCommand::SetViewPort(0, 0, width, height);
@@ -27,8 +32,8 @@ namespace REngine
     void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
     {
         shader->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_viewProjectionMatrix", s_sceneData->ViewProjectionMatrix);
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_transform", transform);
+        shader->SetMat4("u_viewProjectionMatrix", s_sceneData->ViewProjectionMatrix);
+        shader->SetMat4("u_transform", transform);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

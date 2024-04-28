@@ -1,8 +1,6 @@
 #include <REngine.h>
 #include <REngine/Core/EntryPoint.h>
 
-#include <Platform/OpenGL/OpenGLShader.h>
-
 #include <imgui/imgui.h>
 
 #include <glm/ext/matrix_transform.hpp>
@@ -116,11 +114,9 @@ public:
 
         m_vertexArray = REngine::VertexArray::Create();
 
-        REngine::Ref<REngine::VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(REngine::VertexBuffer::Create(vertices, sizeof(vertices)));
+        REngine::Ref<REngine::VertexBuffer> vertexBuffer = REngine::VertexBuffer::Create(vertices, sizeof(vertices));
 
-        REngine::Ref<REngine::IndexBuffer> indexBuffer;
-        indexBuffer.reset(REngine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+        REngine::Ref<REngine::IndexBuffer> indexBuffer = REngine::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 
         vertexBuffer->SetLayout(layout);
 
@@ -132,11 +128,9 @@ public:
 
         m_squareVertexArray = REngine::VertexArray::Create();
 
-        REngine::Ref<REngine::VertexBuffer> squareVertexBuffer;
-        squareVertexBuffer.reset(REngine::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        REngine::Ref<REngine::VertexBuffer> squareVertexBuffer = REngine::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
-        REngine::Ref<REngine::IndexBuffer> squareIndexBuffer;
-        squareIndexBuffer.reset(REngine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        REngine::Ref<REngine::IndexBuffer> squareIndexBuffer = REngine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
         squareVertexBuffer->SetLayout(squareLayout);
 
@@ -150,8 +144,8 @@ public:
         m_texture2D = REngine::Texture2D::Create("Assets/Textures/AAAAA.png");
         m_logoTexture2D = REngine::Texture2D::Create("Assets/Textures/REngineLogo.png");
 
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(textureShader)->Bind();
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(textureShader)->UploadUniformInt("u_texture", 0);
+        textureShader->Bind();
+        textureShader->SetInt("u_texture", 0);
     }
 
     void OnUpdate(REngine::TimeStep ts) override
@@ -170,8 +164,8 @@ public:
         glm::vec4 greenColor(0.3, 0.8f, 0.2f, 1.0f);
         glm::vec4 blueColor(0.2, 0.3f, 0.8f, 1.0f);
 
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_flatColorShader)->Bind();
-        std::dynamic_pointer_cast<REngine::OpenGLShader>(m_flatColorShader)->UploadUniformFloat3("u_color", m_squareColor);
+        m_flatColorShader->Bind();
+        m_flatColorShader->SetFloat3("u_color", m_squareColor);
 
         for (int x = 0; x < 20; x++)
         {

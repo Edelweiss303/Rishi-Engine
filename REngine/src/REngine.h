@@ -2,6 +2,7 @@
 
 //For use by REngine applications;
 
+#include "REngine/Core/Core.h"
 #include "REngine/Core/Application.h"
 #include "REngine/Core/Input.h"
 #include "REngine/Core/KeyCodes.h"

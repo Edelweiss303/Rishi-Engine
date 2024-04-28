@@ -4,7 +4,7 @@
 
 namespace REngine
 {
-    class RE_API Input
+    class Input
     {
     public:
         inline static bool IsKeyPressed(int keycode) { return s_instance->IsKeyPressedImpl(keycode); }

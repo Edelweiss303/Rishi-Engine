@@ -15,9 +15,9 @@ namespace REngine
         RE_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
     }
 
-    Window* Window::Create(const WindowProps& props)
+    Scope<Window> Window::Create(const WindowProps& props)
     {
-        return new WindowsWindow(props);
+        return CreateScope<WindowsWindow>(props);
     }
 
     WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -40,7 +40,6 @@ namespace REngine
 
         if (s_GLFWWindowCount == 0)
         {
-            RE_CORE_INFO("Initializing GLFW");
             int success = glfwInit();
             
             RE_CORE_ASSERT(success, "Could not initialize GLFW!");
@@ -50,7 +49,7 @@ namespace REngine
         m_window = glfwCreateWindow((int)props.Width, (int)props.Height, m_data.Title.c_str(), nullptr, nullptr);
         s_GLFWWindowCount++;
 
-        m_context = CreateScope<OpenGLContext>(m_window);
+        m_context = GraphicsContext::Create(m_window);
         m_context->Init();
 
        

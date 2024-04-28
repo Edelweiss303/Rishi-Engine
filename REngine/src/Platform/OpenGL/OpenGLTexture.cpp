@@ -1,7 +1,7 @@
 #include "REpch.h"
 #include "OpenGLTexture.h"
 
-#include "stb_image.h"
+#include <stb_image.h>
 
 #include <glad/glad.h>
 
