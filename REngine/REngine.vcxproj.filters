@@ -159,7 +159,7 @@
     <ClInclude Include="src\REngine\Renderer\VertexArray.h">
       <Filter>src\REngine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\repch.h">
+    <ClInclude Include="src\REpch.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
@@ -1414,6 +1414,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\REngine\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\REngine\Debug\Instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
