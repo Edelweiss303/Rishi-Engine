@@ -10,21 +10,22 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+    RE_PROFILE_FUNCTION();
+
     m_texture2D = REngine::Texture2D::Create("Assets/Textures/AAAAA.png");
 }
 
 void Sandbox2D::OnDetach()
 {
+    RE_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::OnUpdate(REngine::TimeStep ts)
 {
     RE_PROFILE_FUNCTION();
 
-    {
-        RE_PROFILE_SCOPE("CameraController::OnUpdate");
-        m_cameraController.OnUpdate(ts);
-    }
+    m_cameraController.OnUpdate(ts);
+    
 
     {
         RE_PROFILE_SCOPE("Renderer Prep");

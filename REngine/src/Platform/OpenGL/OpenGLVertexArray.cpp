@@ -28,26 +28,36 @@ namespace REngine
 
     OpenGLVertexArray::OpenGLVertexArray()
     {
+        RE_PROFILE_FUNCTION();
+
         glCreateVertexArrays(1, &m_rendererID);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()
     {
+        RE_PROFILE_FUNCTION();
+
         glDeleteVertexArrays(1, &m_rendererID);
     }
 
     void OpenGLVertexArray::Bind() const
     {
+        RE_PROFILE_FUNCTION();
+
         glBindVertexArray(m_rendererID);
     }
 
     void OpenGLVertexArray::Unbind() const
     {
+        RE_PROFILE_FUNCTION();
+
         glBindVertexArray(0);
     }
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
+        RE_PROFILE_FUNCTION();
+
         RE_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout.");
         
         glBindVertexArray(m_rendererID);
@@ -77,6 +87,8 @@ namespace REngine
 
     void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
+        RE_PROFILE_FUNCTION();
+
         glBindVertexArray(m_rendererID);
         indexBuffer->Bind();
 

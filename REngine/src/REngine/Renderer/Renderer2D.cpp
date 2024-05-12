@@ -19,6 +19,8 @@ namespace REngine
 
     void Renderer2D::Init()
     {
+        RE_PROFILE_FUNCTION();
+
         s_data = new Renderer2DStorage();
 
         float squareVertices[5 * 4] =
@@ -56,17 +58,23 @@ namespace REngine
 
     void Renderer2D::Shutdown()
     {
+        RE_PROFILE_FUNCTION();
+
         delete s_data;
     }
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
+        RE_PROFILE_FUNCTION();
+
         s_data->TextureShader->Bind();
         s_data->TextureShader->SetMat4("u_viewProjectionMatrix", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
     {
+        RE_PROFILE_FUNCTION();
+
     }
 
     void Renderer2D::DrawQuad(const glm::vec4& color)
@@ -81,6 +89,8 @@ namespace REngine
 
     void Renderer2D::DrawQuad(const glm::vec3& position, float rotationDeg, const glm::vec2& size, const glm::vec4& color)
     {
+        RE_PROFILE_FUNCTION();
+
         s_data->TextureShader->SetFloat4("u_color", color);
         s_data->WhiteTexture->Bind();
 
@@ -107,6 +117,8 @@ namespace REngine
 
     void Renderer2D::DrawQuad(const glm::vec3& position, float rotationDeg, const glm::vec2& size, const Ref<Texture2D>& texture)
     {
+        RE_PROFILE_FUNCTION();
+
         s_data->TextureShader->SetFloat4("u_color", glm::vec4(1.0f));
         texture->Bind();
 

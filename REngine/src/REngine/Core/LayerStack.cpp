@@ -28,6 +28,7 @@ namespace REngine
         auto it = std::find(m_layers.begin(), m_layers.end(), layer);
         if (it != m_layers.end())
         {
+            layer->OnDetach();
             m_layers.erase(it);
             m_layerInsertIndex--;
         }
@@ -37,6 +38,9 @@ namespace REngine
     {
         auto it = std::find(m_layers.begin(), m_layers.end(), overlay);
         if (it != m_layers.end())
+        {
+            overlay->OnDetach();
             m_layers.erase(it);
+        }
     }
 }

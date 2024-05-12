@@ -11,6 +11,8 @@ namespace REngine
     }
     void OrthographicCameraController::OnUpdate(TimeStep ts)
     {
+        RE_PROFILE_FUNCTION();
+
         if (Input::IsKeyPressed(RE_KEY_A))
         {
             m_cameraPosition.x -= cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
@@ -54,6 +56,8 @@ namespace REngine
 
     void OrthographicCameraController::OnEvent(Event& e)
     {
+        RE_PROFILE_FUNCTION();
+
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<MouseScrolledEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScroll));
         dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
@@ -61,6 +65,8 @@ namespace REngine
 
     bool OrthographicCameraController::OnMouseScroll(MouseScrolledEvent& e)
     {
+        RE_PROFILE_FUNCTION();
+
         m_zoomLevel -= e.GetYOffset() * 0.5f;
         m_zoomLevel = std::max(m_zoomLevel, 0.1f);
         m_camera.SetProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);
@@ -69,6 +75,8 @@ namespace REngine
 
     bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
     {
+        RE_PROFILE_FUNCTION();
+
         m_aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
         m_camera.SetProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);
         return false;

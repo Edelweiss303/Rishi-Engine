@@ -22,16 +22,22 @@ namespace REngine
 
     WindowsWindow::WindowsWindow(const WindowProps& props)
     {
+        RE_PROFILE_FUNCTION();
+
         Init(props);
     }
 
     WindowsWindow::~WindowsWindow()
     {
+        RE_PROFILE_FUNCTION();
+
         Shutdown();
     }
 
     void WindowsWindow::Init(const WindowProps& props)
     {
+        RE_PROFILE_FUNCTION();
+
         m_data.Title = props.Title;
         m_data.Width = props.Width;
         m_data.Height = props.Height;
@@ -40,14 +46,20 @@ namespace REngine
 
         if (s_GLFWWindowCount == 0)
         {
+            RE_PROFILE_SCOPE("glfwInit");
+
             int success = glfwInit();
-            
+
             RE_CORE_ASSERT(success, "Could not initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
         }
 
-        m_window = glfwCreateWindow((int)props.Width, (int)props.Height, m_data.Title.c_str(), nullptr, nullptr);
-        s_GLFWWindowCount++;
+        {
+            RE_PROFILE_SCOPE("glfwCreateWindow");
+
+            m_window = glfwCreateWindow((int)props.Width, (int)props.Height, m_data.Title.c_str(), nullptr, nullptr);
+            s_GLFWWindowCount++;
+        }
 
         m_context = GraphicsContext::Create(m_window);
         m_context->Init();
@@ -155,6 +167,8 @@ namespace REngine
 
     void WindowsWindow::Shutdown()
     {
+        RE_PROFILE_FUNCTION();
+
         if (m_window != nullptr)
         {
             glfwDestroyWindow(m_window);
@@ -171,12 +185,16 @@ namespace REngine
 
     void WindowsWindow::OnUpdate()
     {
+        RE_PROFILE_FUNCTION();
+
         glfwPollEvents();
         m_context->SwapBuffers();
     }
 
     void WindowsWindow::SetVSync(bool enabled)
     {
+        RE_PROFILE_FUNCTION();
+
         if (enabled)
             glfwSwapInterval(1);
         else

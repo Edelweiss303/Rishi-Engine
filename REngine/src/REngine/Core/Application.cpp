@@ -13,6 +13,8 @@ namespace REngine
 
     Application::Application()
     {
+        RE_PROFILE_FUNCTION();
+
         RE_CORE_ASSERT(!s_instance, "Application already exists!")
         s_instance = this;
 
@@ -27,13 +29,19 @@ namespace REngine
 
     Application::~Application()
     {
+        RE_PROFILE_FUNCTION();
+
         Renderer::Shutdown();
     }
 
     void Application::Run()
     {
+        RE_PROFILE_FUNCTION();
+
         while (m_running)
         {
+            RE_PROFILE_SCOPE("RunLoop");
+
             float time = (float) glfwGetTime(); // should be Platform::GetTime()
 
             TimeStep timeStep = time - m_lastFrameTime;
@@ -41,22 +49,32 @@ namespace REngine
 
             if (!m_minimized)
             {
-                for (Layer* layer : m_layerStack)
-                    layer->OnUpdate(timeStep);
-             
+                {
+                    RE_PROFILE_SCOPE("LayerStack OnUpdate");
+
+                    for (Layer* layer : m_layerStack)
+                        layer->OnUpdate(timeStep);
+                }
+
+                m_imGuiLayer->Begin(); 
+
+                {
+                    RE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+                    for (Layer* layer : m_layerStack)
+                        layer->OnImGuiRender();
+                }
+
+                m_imGuiLayer->End();
             }
 
-            m_imGuiLayer->Begin(); 
-
-            for (Layer* layer : m_layerStack)
-                layer->OnImGuiRender();
-
-            m_imGuiLayer->End();
             m_window->OnUpdate();
         }
     }
     void Application::OnEvent(Event& e)
     {
+        RE_PROFILE_FUNCTION();
+
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(Application::OnWindowResize));
@@ -71,12 +89,16 @@ namespace REngine
 
     void Application::PushLayer(Layer* layer)
     {
+        RE_PROFILE_FUNCTION();
+
         m_layerStack.PushLayer(layer);
         layer->OnAttach();
     }
 
     void Application::PushOverlay(Layer* overlay)
     {
+        RE_PROFILE_FUNCTION();
+
         m_layerStack.PushOverlay(overlay);
         overlay->OnAttach();
     }
@@ -88,6 +110,8 @@ namespace REngine
     }
     bool Application::OnWindowResize(WindowResizeEvent& e)
     {
+        RE_PROFILE_FUNCTION();
+
         if (e.GetWidth() == 0 || e.GetHeight() == 0)
         {
             m_minimized = true;

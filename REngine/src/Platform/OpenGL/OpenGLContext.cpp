@@ -14,6 +14,8 @@ namespace REngine
 
     void OpenGLContext::Init()
     {
+        RE_PROFILE_FUNCTION();
+
         glfwMakeContextCurrent(m_windowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         RE_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -35,6 +37,8 @@ namespace REngine
 
     void OpenGLContext::SwapBuffers()
     {
+        RE_PROFILE_FUNCTION();
+
         glfwSwapBuffers(m_windowHandle);
     }
 }
