@@ -36,9 +36,9 @@ void Sandbox2D::OnUpdate(REngine::TimeStep ts)
     {
         RE_PROFILE_SCOPE("Renderer Draw");
         REngine::Renderer2D::BeginScene(m_cameraController.GetCamera());
-        REngine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, 0.0f, { 0.8f, 0.8f }, { 0.3, 1.0f, 0.4f, 1.0f });
-        REngine::Renderer2D::DrawQuad({ 0.0f, 1.0f }, 5.0f, { 1.0f, 1.5f }, { 0.3, 0.4f, 1.0f, 1.0f });
-        REngine::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, 0.0f, { 5.0f, 5.0f }, m_texture2D);
+        REngine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.3, 1.0f, 0.4f, 1.0f });
+        REngine::Renderer2D::DrawQuadRotated({ 0.0f, 1.0f }, glm::radians(45.0f), {1.0f, 1.5f}, {0.3, 0.4f, 1.0f, 1.0f});
+        REngine::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 5.0f, 5.0f }, m_texture2D, 10.0f);
         REngine::Renderer2D::EndScene();
     }
 }
