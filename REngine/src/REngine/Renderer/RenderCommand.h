@@ -27,9 +27,9 @@ namespace REngine
             s_rendererAPI->Clear(); 
         }
 
-        inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
+        inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0)
         { 
-            s_rendererAPI->DrawIndexed(vertexArray); 
+            s_rendererAPI->DrawIndexed(vertexArray, count); 
         }
 
     private:
