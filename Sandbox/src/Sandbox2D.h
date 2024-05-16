@@ -18,6 +18,7 @@ private:
     REngine::OrthographicCameraController m_cameraController;
 
     REngine::Ref<REngine::Texture2D> m_texture2D;
+    REngine::Ref<REngine::Texture2D> m_logo;
 
     glm::vec4 m_squareColor = { 0.2f, 0.8f, 0.3f, 1.0f };
 
