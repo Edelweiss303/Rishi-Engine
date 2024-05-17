@@ -19,6 +19,9 @@
     <Filter Include="src\REngine\Core">
       <UniqueIdentifier>{3C99E88F-2892-07E2-51C4-EC663D1CE7ED}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\REngine\Debug">
+      <UniqueIdentifier>{DA1B088D-4632-0623-8FA9-9144FBFED6AA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\REngine\Events">
       <UniqueIdentifier>{C8E99531-B4CD-5687-1D2E-51DA09314109}</UniqueIdentifier>
     </Filter>
@@ -114,6 +117,9 @@
     <ClInclude Include="src\REngine\Core\Window.h">
       <Filter>src\REngine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\REngine\Debug\Instrumentor.h">
+      <Filter>src\REngine\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\REngine\Events\ApplicationEvent.h">
       <Filter>src\REngine\Events</Filter>
     </ClInclude>
@@ -145,6 +151,9 @@
       <Filter>src\REngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\REngine\Renderer\Renderer.h">
+      <Filter>src\REngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\REngine\Renderer\Renderer2D.h">
       <Filter>src\REngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\REngine\Renderer\RendererAPI.h">
@@ -1413,8 +1422,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\REngine\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\REngine\Debug\Instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1462,6 +1469,9 @@
     <ClCompile Include="src\REngine\Renderer\Buffer.cpp">
       <Filter>src\REngine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\REngine\Renderer\GraphicsContext.cpp">
+      <Filter>src\REngine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\REngine\Renderer\OrthographicCamera.cpp">
       <Filter>src\REngine\Renderer</Filter>
     </ClCompile>
@@ -1472,6 +1482,9 @@
       <Filter>src\REngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\REngine\Renderer\Renderer.cpp">
+      <Filter>src\REngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\REngine\Renderer\Renderer2D.cpp">
       <Filter>src\REngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\REngine\Renderer\RendererAPI.cpp">
@@ -1492,7 +1505,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\REngine\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\REngine\Renderer\GraphicsContext.cpp" />
   </ItemGroup>
 </Project>

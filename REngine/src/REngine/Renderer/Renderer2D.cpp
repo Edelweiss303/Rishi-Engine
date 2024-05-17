@@ -19,9 +19,9 @@ namespace REngine
 
     struct Renderer2DData
     {
-        const uint32_t MaxQuads = 10000;
-        const uint32_t MaxVertices = MaxQuads * 4;
-        const uint32_t MaxIndices = MaxQuads * 6;
+        static const uint32_t MaxQuads = 20000;
+        static const uint32_t MaxVertices = MaxQuads * 4;
+        static const uint32_t MaxIndices = MaxQuads * 6;
         static const uint32_t MaxTextureSlots = 32; // TODO: Render Caps
 
         Ref<VertexArray> QuadVertexArray;
@@ -37,6 +37,8 @@ namespace REngine
         uint32_t TextureSlotIndex = 1; // 0 = white texture
 
         glm::vec4 QuadVertexPositions[4];
+
+        Renderer2D::Statistics Stats;
     };
 
 
@@ -63,11 +65,7 @@ namespace REngine
         }
 
         s_data.QuadVertexArray = VertexArray::Create();
-
-        s_data.QuadVertexBuffer = VertexBuffer::Create(s_data.MaxQuads * sizeof(QuadVertex));
-
-        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, s_data.MaxIndices);
-
+        s_data.QuadVertexBuffer = VertexBuffer::Create(s_data.MaxVertices * sizeof(QuadVertex));
         s_data.QuadVertexBuffer->SetLayout({
             { ShaderDataType::Float3, "a_position" },
             { ShaderDataType::Float4, "a_color" },
@@ -77,10 +75,12 @@ namespace REngine
             });
 
         s_data.QuadVertexArray->AddVertexBuffer(s_data.QuadVertexBuffer);
-        s_data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-        
         s_data.QuadVertexBufferBase = new QuadVertex[s_data.MaxVertices];
+        
+        Ref<IndexBuffer> quadIndexBuffer = IndexBuffer::Create(quadIndices, s_data.MaxIndices);
+        s_data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
         delete[] quadIndices;
+        
         
         uint32_t whiteTextureData = 0xffffffff;
         s_data.WhiteTexture = Texture2D::Create(1, 1);
@@ -141,6 +141,7 @@ namespace REngine
         }
 
         RenderCommand::DrawIndexed(s_data.QuadVertexArray, s_data.QuadIndexCount);
+        s_data.Stats.DrawCalls++;
     }
 
     void Renderer2D::DrawQuad(const glm::vec4& color)
@@ -161,6 +162,11 @@ namespace REngine
     void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
     {
         RE_PROFILE_FUNCTION();
+        
+        if (s_data.QuadIndexCount >= Renderer2DData::MaxIndices)
+        {
+            FlushAndReset();
+        }
 
         const float textureIndex = 0.0f; // White Texture;
         const float tilingFactor = 1.0f; 
@@ -198,6 +204,8 @@ namespace REngine
         s_data.QuadVertexBufferPtr++;
 
         s_data.QuadIndexCount += 6;
+
+        s_data.Stats.QuadCount++;
     }
 
     void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
@@ -208,6 +216,11 @@ namespace REngine
     void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
     {
         RE_PROFILE_FUNCTION();
+
+        if (s_data.QuadIndexCount >= Renderer2DData::MaxIndices)
+        {
+            FlushAndReset();
+        }
 
         float textureIndex = 0.0f;
 
@@ -262,6 +275,8 @@ namespace REngine
 
         s_data.QuadIndexCount += 6;
 
+        s_data.Stats.QuadCount++;
+
 #if old_path
         s_data.TextureShader->SetFloat4("u_color", tintColor);
         s_data.TextureShader->SetFloat("u_tilingFactor", tilingFactor);
@@ -287,6 +302,11 @@ namespace REngine
     void Renderer2D::DrawQuadRotated(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4& color)
     {
         RE_PROFILE_FUNCTION();
+
+        if (s_data.QuadIndexCount >= Renderer2DData::MaxIndices)
+        {
+            FlushAndReset();
+        }
 
         const float textureIndex = 0.0f; // White Texture;
         const float tilingFactor = 1.0f;
@@ -325,6 +345,8 @@ namespace REngine
         s_data.QuadVertexBufferPtr++;
 
         s_data.QuadIndexCount += 6;
+
+        s_data.Stats.QuadCount++;
     }
 
     void Renderer2D::DrawQuadRotated(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
@@ -335,6 +357,11 @@ namespace REngine
     void Renderer2D::DrawQuadRotated(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
     {
         RE_PROFILE_FUNCTION();
+
+        if (s_data.QuadIndexCount >= Renderer2DData::MaxIndices)
+        {
+            FlushAndReset();
+        }
 
         float textureIndex = 0.0f;
 
@@ -389,6 +416,28 @@ namespace REngine
         s_data.QuadVertexBufferPtr++;
 
         s_data.QuadIndexCount += 6;
+
+        s_data.Stats.QuadCount++;
+    }
+
+    Renderer2D::Statistics Renderer2D::GetStats()
+    {
+        return s_data.Stats;
+    }
+
+    void Renderer2D::ResetStats()
+    {
+        memset(&s_data.Stats, 0, sizeof(Statistics));
+    }
+
+    void Renderer2D::FlushAndReset()
+    {
+        EndScene();
+
+        s_data.QuadIndexCount = 0;
+        s_data.QuadVertexBufferPtr = s_data.QuadVertexBufferBase;
+
+        s_data.TextureSlotIndex = 1;
     }
 
 }
