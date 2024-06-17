@@ -79,9 +79,9 @@ namespace REngine
         dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(Application::OnWindowClose));
         dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(Application::OnWindowResize));
 
-        for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
+        for (auto it = m_layerStack.rbegin(); it != m_layerStack.rend();)
         {
-            (*--it)->OnEvent(e);
+            (*it)->OnEvent(e);
             if (e.Handled)
                 break;
         }
