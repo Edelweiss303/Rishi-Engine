@@ -13,8 +13,8 @@ namespace REngine
         }
 
         // Const methods prevent changing values of data in their own class
-        inline float GetX() const { return m_mouseX; }
-        inline float GetY() const { return m_mouseY; }
+        float GetX() const { return m_mouseX; }
+        float GetY() const { return m_mouseY; }
 
         std::string ToString() const override
         {
@@ -39,8 +39,8 @@ namespace REngine
         {
         }
 
-        inline float GetXOffset() const { return m_xOffset; }
-        inline float GetYOffset() const { return m_yOffset; }
+        float GetXOffset() const { return m_xOffset; }
+        float GetYOffset() const { return m_yOffset; }
 
         std::string ToString() const override
         {

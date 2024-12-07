@@ -7,7 +7,7 @@ namespace REngine
     class KeyEvent : public Event
     {
     public:
-        inline int GetKeyCode() const { return m_keycode; }
+        int GetKeyCode() const { return m_keycode; }
         EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
     protected:
@@ -28,7 +28,7 @@ namespace REngine
         {
         }
 
-        inline int GetRepeatCount() const { return m_repeatCount; }
+        int GetRepeatCount() const { return m_repeatCount; }
 
         std::string ToString() const override
         {

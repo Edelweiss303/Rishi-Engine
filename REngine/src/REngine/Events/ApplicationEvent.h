@@ -12,8 +12,8 @@ namespace REngine
         {
         }
 
-        inline unsigned int GetWidth() const { return m_width; }
-        inline unsigned int GetHeight() const { return m_height; }
+        unsigned int GetWidth() const { return m_width; }
+        unsigned int GetHeight() const { return m_height; }
 
         std::string ToString() const override
         {

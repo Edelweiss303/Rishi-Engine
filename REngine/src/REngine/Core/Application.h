@@ -22,8 +22,8 @@ namespace REngine
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
 
-        static inline Application& Get() { return *s_instance; }
-        inline Window& GetWindow() { return *m_window; }
+        static Application& Get() { return *s_instance; }
+        Window& GetWindow() { return *m_window; }
     private:
         bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
