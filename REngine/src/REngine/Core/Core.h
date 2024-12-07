@@ -44,13 +44,22 @@
 #endif // End of platform detection
 
 
-#ifdef RE_DEBUG
+#ifdef RE_DEBUG#
+    #if defined(RE_PLATFORM_WINDOWS)
+        #define RE_DEBUGBREAK() __debugbreak()
+    #elif defined(RE_PLATFORM_LINUX)
+        #include <signal.h>
+        #define RE_DEBUGBREAK() raise(SIGTRAP)
+    #else
+        #error "Platform doesn't support debugbreak yet!"
+    #endif
+    
     #define RE_ENABLE_ASSERTS
 #endif 
 
 #ifdef RE_ENABLE_ASSERTS
-    #define RE_ASSERT(x, ...) { if(!(x)) { RE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-    #define RE_CORE_ASSERT(x, ...) { if(!(x)) { RE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+    #define RE_ASSERT(x, ...) { if(!(x)) { RE_ERROR("Assertion Failed: {0}", __VA_ARGS__); RE_DEBUGBREAK(); } }
+    #define RE_CORE_ASSERT(x, ...) { if(!(x)) { RE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); RE_DEBUGBREAK(); } }
 #else
     #define RE_ASSERT(x, ...)
     #define RE_CORE_ASSERT(x, ...)
